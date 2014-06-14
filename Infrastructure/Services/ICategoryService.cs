@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    interface ICategoryService
+    public interface ICategoryService
     {
         IEnumerable<Category> GetCategories();
 
-        IEnumerable<Category> GetCategoriesByParent(int parentId);
+        IEnumerable<Category> GetCategoriesByParent(int? parentId);
 
         Category GetCategoryById(int id);
 
         void AddCategory(Category cat);
 
         void EditCategory(Category cat);
+
+        void DeleteCategory(int id);
     }
 
     public class CategoryService: ICategoryService
@@ -36,7 +38,7 @@ namespace Infrastructure.Services
             return result;
         }
 
-        public IEnumerable<Category> GetCategoriesByParent(int parentId)
+        public IEnumerable<Category> GetCategoriesByParent(int? parentId)
         {
             List<Category> result = catRepo.Query().Where(c=>c.ParentId == parentId).ToList();
             return result;
@@ -56,6 +58,13 @@ namespace Infrastructure.Services
         public void EditCategory(Category cat)
         {
             catRepo.Update(cat);
+        }
+
+
+        public void DeleteCategory(int id)
+        {
+            Category cat = catRepo.Get(id);
+            catRepo.Remove(cat);
         }
     }
 }
