@@ -25,6 +25,7 @@ namespace iteachart.Controllers
         {
             try
             {
+                TempData["FirstLogin"] = true;
                 session.Login(model);
                 if (!string.IsNullOrWhiteSpace(returnUrl))
                 {

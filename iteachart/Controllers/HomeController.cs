@@ -21,10 +21,11 @@ namespace iteachart.Controllers
 
         public ActionResult Index()
         {
-            if (!sessionService.IsLoggedIn() && Request.IsAuthenticated)
+			if (!sessionService.IsLoggedIn() && Request.IsAuthenticated)
             {
                 return RedirectToAction("Logoff", "Account");
             }
+            ViewBag.FirstLogin = TempData["FirstLogin"] != null;
             ViewBag.Deps = userService.GetDepartments();
 
             var users = userService.GetUsersList()
