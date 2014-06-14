@@ -21,7 +21,6 @@ namespace iteachart.Controllers
         // GET: /Profile/1
         public ActionResult My()
         {
-            categoryService.FillDB();
             var userInfo = FIllUserInfo(CurrentUser.Id);
             return View("Index", userInfo);
         }
@@ -51,16 +50,26 @@ namespace iteachart.Controllers
             return userInfo;
         }
 
-        public ActionResult AddSkill(AddSkillModel model)
+        public ActionResult AddSkill(int categoryId)
         {
             if (ModelState.IsValid)
             {
-                userService.AddSkill(model);
-                return RedirectToAction("Index", new { id = model.UserId });
+                userService.AddSkill(new AddSkillModel
+                {
+                    UserId = CurrentUser.Id,
+                    CategoryId = categoryId
+                });
+                return RedirectToAction("My");
             }
-            var user = FIllUserInfo(model.UserId);
+            var user = FIllUserInfo(CurrentUser.Id);
             return View("Index", user);
 
+        }
+
+        public ActionResult RemoveSkill(int categoryId)
+        {
+            userService.RemoveSkill(categoryId, CurrentUser.Id);
+            return RedirectToAction("My");
         }
     }
 }
