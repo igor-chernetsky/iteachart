@@ -42,12 +42,12 @@
 
             this.filteredItems =  ko.computed(function() {
                     var filter = self.searchExpr().toLowerCase();
-                    if (!filter && self.currentDep() == depDefault) {
-                        return self.items();
-                    } else {
+                    if (filter || self.currentDep() == depDefault) {
                         return ko.utils.arrayFilter(self.items(), function (item) {
-                            return item.FullName.toLowerCase().indexOf(filter) > -1 && item.DeptId == self.currentDep();
+                            return item.FullName.toLowerCase().indexOf(filter) > -1 || item.DeptId == self.currentDep();
                         });
+                    } else {
+                        return self.items();
                     }
             })
             
