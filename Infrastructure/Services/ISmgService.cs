@@ -59,7 +59,7 @@ namespace Infrastructure.Services
 
         public EmployeeDetailsResponse GetEmployeeDetails(int profileId)
         {
-            return Request<EmployeeDetailsResponse, EmployeeDetailsRequest>(new EmployeeDetailsRequest(User.AuthorizationToken));
+            return Request<EmployeeDetailsResponse, EmployeeDetailsRequest>(new EmployeeDetailsRequest(User.AuthorizationToken, profileId));
         }
 
         public void PopulateDataBase()
@@ -84,16 +84,20 @@ namespace Infrastructure.Services
                         Room = e.Room
                     };
 
-                    var d = GetEmployeeDetails(user.ProfileId).Details;
-                    user.MiddleName = d.MiddleName;
-                    user.Birthday = d.Birthday;
-                    user.Skype = d.Skype;
-                    user.Phone = d.Phone;
-                    user.DomenName = d.DomenName;
-                    user.Rank = d.Rank;
-                    user.Room = d.Room;
-                    user.Email = d.Email;
-                    
+                    var details = GetEmployeeDetails(user.ProfileId);
+                    if (details != null)
+                    {
+                        var profile = details.Profile;
+                        user.MiddleName = profile.MiddleName;
+                        user.Birthday   = profile.Birthday;
+                        user.Skype      = profile.Skype;
+                        user.Phone      = profile.Phone;
+                        user.DomenName  = profile.DomenName;
+                        user.Rank       = profile.Rank;
+                        user.Room       = profile.Room;
+                        user.Email      = profile.Email;
+                    }
+                   
                     userRepo.Add(user);
 
                     
@@ -110,16 +114,20 @@ namespace Infrastructure.Services
                     old.Position     = e.Position;
                     old.ProfileId    = e.ProfileId;
                     old.Room         = e.Room;
-                    var d = GetEmployeeDetails(old.ProfileId).Details;
-                    old.MiddleName = d.MiddleName;
-                    old.Birthday = d.Birthday;
-                    old.Skype = d.Skype;
-                    old.Phone = d.Phone;
-                    old.DomenName = d.DomenName;
-                    old.Rank = d.Rank;
-                    old.Room = d.Room;
-                    old.Email = d.Email;
-                    userRepo.Update(old);
+                    var details = GetEmployeeDetails(old.ProfileId);
+                    if (details != null)
+                    {
+                        var profile = details.Profile;
+                        old.MiddleName = profile.MiddleName;
+                        old.Birthday   = profile.Birthday;
+                        old.Skype      = profile.Skype;
+                        old.Phone      = profile.Phone;
+                        old.DomenName  = profile.DomenName;
+                        old.Rank       = profile.Rank;
+                        old.Room       = profile.Room;
+                        old.Email      = profile.Email;
+                        userRepo.Update(old);
+                    }
                 }
             }
         }

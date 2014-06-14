@@ -8,7 +8,7 @@ namespace Infrastructure.Models.Smg
 {
     public class EmployeeDetailsResponse : BaseResponse
     {
-        public EmployeeDetails Details { get; set; }
+        public EmployeeDetails Profile { get; set; }
     }
 
     public class EmployeeDetails

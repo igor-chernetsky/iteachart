@@ -109,6 +109,7 @@
     <Compile Include="Services\ISessionService.cs" />
     <Compile Include="Services\ISmgService.cs" />
     <Compile Include="Services\ITestService.cs" />
+    <Compile Include="Services\IUserService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
