@@ -21,6 +21,10 @@ namespace iteachart.Controllers
 
         public ActionResult Index()
         {
+            if (!sessionService.IsLoggedIn() && Request.IsAuthenticated)
+            {
+                return RedirectToAction("Logoff", "Account");
+            }
             ViewBag.Deps = userService.GetDepartments();
 
             var users = userService.GetUsersList()
