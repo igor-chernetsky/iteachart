@@ -138,6 +138,7 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\BaseSecure\" />
     <Folder Include="Views\Category\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
