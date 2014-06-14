@@ -12,6 +12,9 @@
         <th class="hidden">
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
             Full Name
         </th>
         <th>
@@ -23,15 +26,15 @@
         <th>
             @Html.DisplayNameFor(model => model.DeptId)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Image)
-        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td class="hidden">
             @Html.DisplayFor(modelItem => item.ProfileId)
+        </td>
+        <td>
+            <img src="@item.Image" alt="Image" />
         </td>
         <td>
             @Html.ActionLink(item.FirstNameEng + " " + item.LastNameEng, "Details", "Profile")
@@ -44,9 +47,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DeptId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Image)
         </td>
     </tr>
 }
