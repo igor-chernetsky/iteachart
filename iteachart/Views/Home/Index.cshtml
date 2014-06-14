@@ -98,8 +98,8 @@
 
     <div data-bind="foreach: filteredItems" class="row">
         <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img data-bind="attr: {src: Image}" alt=" ...">
+            <div class="thumbnail" style="margin-bottom: 20px;">
+                <img class="profile-poster" data-bind="attr: {src: Image}" alt=" ...">
                 <div class="caption">
                     <h3 data-bind="text: FullName"><a data-bind="attr:{ href }"></a></h3>
                     <p>Department: <span data-bind="text: DeptName"></span></p>

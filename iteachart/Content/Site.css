@@ -53,6 +53,6 @@ input[type="checkbox"].input-validation-error {
 }
 
 .profile-poster {
-    width: 100px;
-    height: 100px;
+    width: 100px !important;
+    height: 100px !important;
 }

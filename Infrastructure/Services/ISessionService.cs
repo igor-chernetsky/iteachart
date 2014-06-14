@@ -47,7 +47,7 @@ namespace Infrastructure.Services
             try
             {
 
-                token = sessionFactory.GetSession(model.UserName, model.Password);
+               // token = sessionFactory.GetSession(model.UserName, model.Password);
 
                 dbUser = userRepo
                     .Query()
