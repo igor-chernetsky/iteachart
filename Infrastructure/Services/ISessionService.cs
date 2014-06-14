@@ -8,6 +8,7 @@ using Infrastructure.Code;
 using Infrastructure.Exceptions;
 using Infrastructure.Models;
 using Infrastructure.Secure;
+using StructureMap.Building;
 
 namespace Infrastructure.Services
 {
@@ -39,17 +40,17 @@ namespace Infrastructure.Services
                 UserName = model.UserName
             };
 
-            HttpContext.Current.Session["ITechUseSession"] = session;
+            HttpContext.Current.Session[Constants.UserKey] = session;
         }
 
         public void LogOut()
         {
-            HttpContext.Current.Session["ITechUseSession"] = null;
+            HttpContext.Current.Session[Constants.UserKey] = null;
         }
 
         public bool IsLoggedIn()
         {
-            return HttpContext.Current.Session["ITechUseSession"] != null;
+            return HttpContext.Current.Session[Constants.UserKey] != null;
         }
     }
 }

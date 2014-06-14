@@ -20,6 +20,7 @@ namespace iteachart.Controllers
         // GET: /Category/
         public ActionResult Index()
         {
+            //categoryService.AutoFill();
             IEnumerable<Category> categories = categoryService.GetCategories();
             return View(categories);
         }

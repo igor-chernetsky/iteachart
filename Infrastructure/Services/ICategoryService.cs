@@ -21,10 +21,26 @@ namespace Infrastructure.Services
         void EditCategory(Category cat);
 
         void DeleteCategory(int id);
+
+        void AutoFill();
     }
 
     public class CategoryService: ICategoryService
     {
+        public void AutoFill(){
+            //remove all cats
+            foreach(Category c in catRepo.Query()){
+                catRepo.Remove(c);
+            }
+
+            catRepo.Add(new Category { Name = ".NET", Id=1 });
+            catRepo.Add(new Category { Name = "JavaScript",Id=2 });
+            catRepo.Add(new Category { Name = "Java", Id = 3 });
+            catRepo.Add(new Category { Name = "ASP.NET", ParentId = 1 });
+            catRepo.Add(new Category { Name = "KnockoutJs", ParentId=2 });
+            catRepo.Add(new Category { Name = "AngularJS", ParentId=2 });
+        }
+
         private IRepository<Category> catRepo;
 
         public CategoryService(IRepository<Category> catRepo)

@@ -40,3 +40,11 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+.profile-username {
+    
+}
+.profile-poster {
+    width: 80px;
+    height: 80px;
+}
