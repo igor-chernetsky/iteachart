@@ -20,6 +20,8 @@ namespace iteachart.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.Deps = userService.GetDepartments();
+
             var users = userService.GetUsersList().Select(s => new UserModel
             {
                 ProfileId = s.ProfileId,
