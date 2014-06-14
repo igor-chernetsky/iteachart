@@ -13,5 +13,11 @@ namespace Infrastructure.EF.Domain
         public int Id { get; set; }
 
         public int? ParentId { get; set; }
+        public virtual Category ParentCategory { get; set; }
+
+        /// <summary>
+        /// Property for top level category
+        /// </summary>
+        public virtual ICollection<Category> ChildCategories { get; set; }
     }
 }

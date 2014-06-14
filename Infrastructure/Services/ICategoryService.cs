@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    interface ICategoryService
+    public interface ICategoryService
     {
         IEnumerable<Category> GetCategories();
 
@@ -19,9 +19,11 @@ namespace Infrastructure.Services
         void AddCategory(Category cat);
 
         void EditCategory(Category cat);
+
+        void FillDB();
     }
 
-    public class CategoryService: ICategoryService
+    public class CategoryService : ICategoryService
     {
         private IRepository<Category> catRepo;
 
@@ -38,7 +40,7 @@ namespace Infrastructure.Services
 
         public IEnumerable<Category> GetCategoriesByParent(int parentId)
         {
-            List<Category> result = catRepo.Query().Where(c=>c.ParentId == parentId).ToList();
+            List<Category> result = catRepo.Query().Where(c => c.ParentId == parentId).ToList();
             return result;
         }
 
@@ -56,6 +58,70 @@ namespace Infrastructure.Services
         public void EditCategory(Category cat)
         {
             catRepo.Update(cat);
+        }
+
+        public void FillDB()
+        {
+            var categories = new List<Category>();
+            categories.Add(new Category
+            {
+                Name = ".NET",
+                ChildCategories = new List<Category>
+                {
+                    new Category
+                    {
+                        Name = "WinForms",
+                    },
+                    new Category
+                    {
+                        Name = "ASP.NET Web Forms"
+                    },
+                    new Category
+                    {
+                        Name = "ASP.NET MVC"
+                    }
+                }
+            });
+            
+            categories.Add(new Category
+            {
+                Name = "Java",
+                ChildCategories = new List<Category>
+                {
+                    new Category
+                    {
+                        Name = "Java Servlets",
+                    },
+                    new Category
+                    {
+                        Name = "Struts 2 framework"
+                    },
+                    new Category
+                    {
+                        Name = "Spring framework"
+                    }
+                }
+            });
+            
+            categories.Add(new Category
+            {
+                Name = "CSS",
+                ChildCategories = new List<Category>
+                {
+                    new Category
+                    {
+                        Name = "CSS3",
+                    },
+                    new Category
+                    {
+                        Name = "CSS Best practice"
+                    }
+                }
+            });
+            foreach (var category in categories)
+            {
+                catRepo.Add(category);
+            }
         }
     }
 }

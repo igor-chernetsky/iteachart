@@ -14,7 +14,7 @@ namespace iteachart.Controllers
     {
         readonly ISessionService session;
 
-        private SessionUser User { get { return (SessionUser)System.Web.HttpContext.Current.Session[Constants.UserKey]; } }
+        protected SessionUser CurrentUser { get { return (SessionUser)System.Web.HttpContext.Current.Session[Constants.UserKey]; } }
 
         public BaseSecureController()
         {

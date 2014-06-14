@@ -21,8 +21,8 @@
                             </a>
                         </div>
                         <div class="col-md-10 profile-username">
-                            <h3>@Model.UserName</h3>
-                            <div class="text-muted">@Model.Department, @Model.Position</div>
+                            <h3>@Model.UserName @Model.UserLastName</h3>
+                            <div class="text-muted">Age: @Model.Age, @Model.Position</div>
                             <hr />
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                                         {
                                             foreach (var subSkill in skill.SubSkills)
                                             {
-                                                <div class="row">
+                                                <div class="row" style="margin-bottom: 5px;">
                                                     <div class="col-md-5 col-md-offset-1">@subSkill.SkillName</div>
                                                     <div class="col-md-5">
                                                         @if (subSkill.IsApproved)
