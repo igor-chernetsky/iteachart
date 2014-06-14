@@ -136,6 +136,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\BaseSecure\" />
+    <Folder Include="Views\Question\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\QuizController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -226,6 +228,7 @@
     <Content Include="Scripts\Select2-locales\select2_locale_zh-TW.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\viewmodels\testViewModel.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -246,6 +249,11 @@
     <Content Include="Views\Category\Create.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Category\CreateQuestion.cshtml" />
+    <Content Include="Views\Category\EditQuestion.cshtml" />
+    <Content Include="Views\Category\_QuestionList.cshtml" />
+    <Content Include="Views\Category\_Variants.cshtml" />
+    <Content Include="Views\Quiz\Test.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

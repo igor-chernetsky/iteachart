@@ -19,5 +19,9 @@ namespace Infrastructure.EF.Domain
         /// Property for top level category
         /// </summary>
         public virtual ICollection<Category> ChildCategories { get; set; }
+
+        public virtual ICollection<Question> Questions { get; set; }
+
+        public virtual ICollection<Attempt> Attempts { get; set; }
     }
 }

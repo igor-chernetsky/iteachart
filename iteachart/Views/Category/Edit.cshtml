@@ -38,10 +38,14 @@
             </div>
         </div>
     </div>
+
+        <div>
+            @Html.Partial("_QuestionList", Model.Questions, new ViewDataDictionary { { "categoryId", Model.Id } })
+        </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
 </div>
 
 @section Scripts {
