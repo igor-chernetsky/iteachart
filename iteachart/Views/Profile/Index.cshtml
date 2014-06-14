@@ -5,12 +5,12 @@
     ViewBag.Title = "Мой профиль";
 }
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" >
     <li class="active"><a href="#profile" data-toggle="tab">IT Profile</a></li>
     <li><a href="#social" data-toggle="tab">Social</a></li>
 </ul>
 <div class="tab-content">
-    <div class="tab-pane active" id="profile">
+    <div class="tab-pane active" id="profile" style="margin-top:-1px;">
         <div class="row">
             <div class="panel panel-info">
                 <div class="panel-body">
@@ -32,6 +32,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-2">
+                            @if (!Model.Skills.Any())
+                            {
+                                <div class="alert alert-info">You haven't added any skills. We beleive that you are a good specialist and just forgot to add your skills.</div>
+                            }
                             @for (var i = 0; i < Model.Skills.Count; i++)
                             {
                                 var skill = Model.Skills[i];
@@ -68,7 +72,8 @@
             </div>
         </div>
     </div>
-    <div class="tab-pane" id="social">
+    <div class="tab-pane" id="social" style="margin-top:-1px;">
+
         Здесь будет инфа, насколько хорошо ты знаешь сотрудников
     </div>
 </div>

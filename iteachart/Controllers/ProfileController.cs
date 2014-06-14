@@ -84,7 +84,7 @@ namespace iteachart.Controllers
                             }
                     }
                     });
-            return View(model);
+            return View(new UserProfileModel());
         }
     }
 }
