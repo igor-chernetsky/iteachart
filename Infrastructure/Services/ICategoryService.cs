@@ -33,12 +33,57 @@ namespace Infrastructure.Services
                 catRepo.Remove(c);
             }
 
-            catRepo.Add(new Category { Name = ".NET", Id=1 });
-            catRepo.Add(new Category { Name = "JavaScript",Id=2 });
-            catRepo.Add(new Category { Name = "Java", Id = 3 });
-            catRepo.Add(new Category { Name = "ASP.NET", ParentId = 1 });
-            catRepo.Add(new Category { Name = "KnockoutJs", ParentId=2 });
-            catRepo.Add(new Category { Name = "AngularJS", ParentId=2 });
+            catRepo.Add(new Category
+            {
+                Name = ".NET",
+                ChildCategories = new List<Category>
+                {
+                    new Category
+                    {
+                        Name = "WinForms",
+                    },
+                    new Category
+                    {
+                        Name = "ASP.NET",
+                    }
+                }
+            });
+            catRepo.Add(new Category
+            {
+                Name = "Java",
+                ChildCategories = new List<Category>
+                {
+                    new Category
+                    {
+                        Name = "Struts 2",
+                    },
+                    new Category
+                    {
+                        Name = "Spring",
+                    }
+                }
+            });
+            
+            catRepo.Add(new Category
+            {
+                Name = "JavaScript",
+                ChildCategories = new List<Category>
+                {
+                    new Category
+                    {
+                        Name = "Knockout JS",
+                    },
+                    new Category
+                    {
+                        Name = "Angular JS",
+                    },
+                    new Category
+                    {
+                        Name = "Backbone JS",
+                    }
+                }
+            });
+
         }
 
         private IRepository<Category> catRepo;

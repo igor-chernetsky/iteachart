@@ -15,5 +15,6 @@ namespace Infrastructure.Models
         public string Position { get; set; }
         public List<UserProfileSkill> Skills { get; set; }
         public int Id { get; set; }
+        public bool CanEdit { get; set; }
     }
 }
