@@ -20,6 +20,7 @@ namespace iteachart.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            ViewBag.HasAccess = false;
             if (!session.IsLoggedIn())
             {
                 filterContext.Result = RedirectToAction("Index", "Home");
