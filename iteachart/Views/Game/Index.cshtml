@@ -25,6 +25,9 @@
                 if (value) {
                     if (self.interval)
                         clearInterval(self.interval);
+                    if (self.timeout) {
+                        clearTimeout(self.timeout);
+                    }
                     $.post('@Url.Action("WriteStatistic")',{guessPerson:self.GuessModel().Id, isGuessed:self.GuessModel().Id == +self.selectedItem()})
                 }
             })
@@ -54,11 +57,12 @@
                 self.Answers(data.Choices)
                 self.selectedItem(null);
                 self.timeLimit(self.limit)
-                setTimeout(function() {
-                    if (self.interval)
-                        clearInterval(self.interval);
-                    if (self.itemIsSelected())
-                        return;
+                if (self.interval)
+                    clearInterval(self.interval);
+                if (self.timeout) {
+                    clearTimeout(self.timeout);
+                }
+                self.timeout = setTimeout(function() {
                     self.tryAgain();
                 }, self.timeLimit()*1000);
                 self.interval = setInterval(function() {
