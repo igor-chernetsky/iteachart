@@ -80,7 +80,14 @@
                                                         }
                                                         else
                                                         {
-                                                            @Html.ActionLink("Not Verified", "Test", "Quiz", new { categoryId = subSkill.SkillId }, new { @class="label label-default"})
+                                                            if (Model.CanEdit)
+                                                            {
+                                                                @Html.ActionLink("Not Verified", "Test", "Quiz", new {categoryId = subSkill.SkillId}, new {@class = "label label-default"})
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="label label-default">Not Verified</span>
+                                                            }
                                                         }
                                                     </div>
                                                     @if (Model.CanEdit)
