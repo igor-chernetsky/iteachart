@@ -41,6 +41,29 @@ namespace Infrastructure.Services
                     new Category
                     {
                         Name = "WinForms",
+                        Questions =  new List<Question>{
+                            new Question{
+                                QuestionString = "how to print",
+                                Type = Code.QuestionTypes.text,
+                                Answer = "Console"
+                            },
+                            new Question{
+                                QuestionString = "what to click",
+                                Type = Code.QuestionTypes.checkbox,
+                                Variants = new List<Variant>{
+                                    new Variant{
+                                        Text = "Button",
+                                        IsCorrect = true
+                                    },
+                                    new Variant{
+                                        Text = "Textbox"
+                                    },
+                                    new Variant{
+                                        Text = "Dropdownlist"
+                                    }
+                                }
+                            }
+                        }
                     },
                     new Category
                     {

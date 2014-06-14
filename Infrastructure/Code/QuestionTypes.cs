@@ -2,7 +2,6 @@
 {
     public enum QuestionTypes
     {
-        radio,
         text,
         checkbox
     }

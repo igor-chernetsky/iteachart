@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    interface IQuestionService
+    public interface IQuestionService
     {
-        void FillDB();
-
         void CreateVariant(Variant v);
         void DeleteVariant(int id);
         IEnumerable<Variant> GetVariantsForQuestion(int questionId);
@@ -19,10 +17,11 @@ namespace Infrastructure.Services
         void CreateQuestion(Question q);
         void EditQuestion(Question q);
         void DeleteQuestion(int id);
+        Question GetQuestion(int id);
         IEnumerable<Question> GetQuestionsByCategory(int categoryId, int? limit = null);
     }
 
-    class QuestionService: IQuestionService
+    public class QuestionService: IQuestionService
     {
         private IRepository<Question> questionRepo;
         private IRepository<Variant> variantRepo;
@@ -31,11 +30,6 @@ namespace Infrastructure.Services
         {
             this.questionRepo = questionRepo;
             this.variantRepo = variantRepo;
-        }
-
-        public void FillDB()
-        {
-            
         }
 
         public void CreateVariant(Variant v)
@@ -81,6 +75,11 @@ namespace Infrastructure.Services
                 result.OrderBy(q => Guid.NewGuid())
                 .Take(limit.Value);
             }
+            return result;
+        }
+        public Question GetQuestion(int id)
+        {
+            Question result = questionRepo.Get(id);
             return result;
         }
     }

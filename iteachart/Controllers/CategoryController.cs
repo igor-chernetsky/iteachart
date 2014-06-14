@@ -11,16 +11,18 @@ namespace iteachart.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService categoryService;
+        private readonly IQuestionService questionService;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IQuestionService questionService)
         {
             this.categoryService = categoryService;
+            this.questionService = questionService;
         }
         //
         // GET: /Category/
         public ActionResult Index()
         {
-            categoryService.FillDB();
+            //categoryService.FillDB();
             IEnumerable<Category> categories = categoryService.GetCategories();
             return View(categories);
         }
@@ -123,6 +125,74 @@ namespace iteachart.Controllers
                 // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        //
+        // GET: /Category/Delete/5
+        public ActionResult DeleteQuestion(int categoryId, int id)
+        {
+            questionService.DeleteQuestion(id);
+            return RedirectToAction("Edit", new { Id = categoryId });
+        }
+
+
+        //
+        // GET: /Category/Create
+        public ActionResult CreateQuestion(int categoryId)
+        {
+            Question q = new Question { CategoryId = categoryId };
+            return View(q);
+        }
+
+        //
+        // POST: /Category/Create
+        [HttpPost]
+        public ActionResult CreateQuestion(FormCollection collection)
+        {
+            try
+            {
+                Question question = new Question
+                {
+                    QuestionString = collection["QuestionString"],
+                    Answer = collection["Answer"]
+                };
+
+                
+                questionService.CreateQuestion(question);
+                return RedirectToAction("Index", new { Id = question.CategoryId });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
+        //
+        // GET: /Category/Edit/5
+        public ActionResult EditQuestion(int id)
+        {
+            Question q = questionService.GetQuestion(id);
+            return View(q);
+        }
+
+        //
+        // POST: /Category/Edit/5
+        [HttpPost]
+        public ActionResult EditQuestion(int id, FormCollection collection)
+        {
+            try
+            {
+                Question q = questionService.GetQuestion(id);
+                q.QuestionString = collection["QuestionString"];
+                q.Answer = collection["Answer"];
+                questionService.EditQuestion(q);
+                return RedirectToAction("Edit", new { id = q.CategoryId });
             }
             catch
             {

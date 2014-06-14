@@ -245,6 +245,7 @@
     <Content Include="Views\Category\CreateQuestion.cshtml" />
     <Content Include="Views\Category\EditQuestion.cshtml" />
     <Content Include="Views\Category\_QuestionList.cshtml" />
+    <Content Include="Views\Category\_Variants.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
