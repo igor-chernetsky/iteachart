@@ -40,14 +40,15 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
+        @Scripts.Render("~/bundles/knockout")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/select2")
+        @RenderSection("scripts", required: false)
         <footer>
             <p>&copy; @DateTime.Now.Year - iTeachArt</p>
         </footer>
     </div>
 
-        @Scripts.Render("~/bundles/knockout")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/select2")
-        @RenderSection("scripts", required: false)
+
     </body>
 </html>
