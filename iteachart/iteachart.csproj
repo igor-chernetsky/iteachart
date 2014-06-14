@@ -137,6 +137,7 @@
     <Folder Include="Models\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\BaseSecure\" />
+    <Folder Include="Views\Question\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +191,9 @@
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Category\Create.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Category\CreateQuestion.cshtml" />
+    <Content Include="Views\Category\EditQuestion.cshtml" />
+    <Content Include="Views\Category\_QuestionList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
