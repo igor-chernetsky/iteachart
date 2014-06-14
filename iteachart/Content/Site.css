@@ -42,8 +42,16 @@ input[type="checkbox"].input-validation-error {
 }
 
 .profile-username {
-    
 }
+
+.white {
+    color: white;
+}
+
+.red {
+    color: red;
+}
+
 .profile-poster {
     width: 100px;
     height: 100px;
