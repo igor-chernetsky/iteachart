@@ -13,6 +13,7 @@ namespace Infrastructure.Models.Smg
     }
     public class Employee
     {
+        public int ProfileId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FirstNameEng { get; set; }
@@ -20,7 +21,7 @@ namespace Infrastructure.Models.Smg
         public string Position { get; set; }
         public string Room { get; set; }
         public int DeptId { get; set; }
-        public string Photo { get; set; }
+        public string Image { get; set; }
         public bool IsEnabled { get; set; }
     }
 }
