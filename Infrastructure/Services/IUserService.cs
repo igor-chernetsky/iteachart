@@ -13,6 +13,7 @@ namespace Infrastructure.Services
         List<UserProfileSkill> GetUserSkills(int userId);
         void AddSkill(AddSkillModel model);
         IEnumerable<User> GetUsersList();
+        void RemoveSkill(int categoryId, int id);
     }
 
     public class UserService : IUserService
@@ -39,7 +40,8 @@ namespace Infrastructure.Services
                 Id = id,
                 UserName = user.FirstNameEng,
                 UserLastName = user.LastNameEng,
-                Age = 26,
+                Age = (DateTime.Now - user.Birthday).Days/365,
+                ImageUrl = user.Image,
                 Position = user.Position
             };
             return model;
@@ -48,18 +50,18 @@ namespace Infrastructure.Services
         public List<UserProfileSkill> GetUserSkills(int userId)
         {
             var userSkills = (from skill in userSkillRepo.Query()
-                             where skill.UserId == userId
-                             group skill by skill.Category.ParentCategory into skillsGrouped
-                             select new UserProfileSkill
-                             {
-                                 SkillName = skillsGrouped.Key.Name,
-                                 SubSkills = skillsGrouped.Select(x=>new UserProfileSubSkill
-                                 {
-                                     SkillId = x.CategoryId,
-                                     SkillName = x.Category.Name,
-                                     IsApproved = x.IsApproved
-                                 })
-                             })
+                              where skill.UserId == userId
+                              group skill by skill.Category.ParentCategory into skillsGrouped
+                              select new UserProfileSkill
+                              {
+                                  SkillName = skillsGrouped.Key.Name,
+                                  SubSkills = skillsGrouped.Select(x => new UserProfileSubSkill
+                                  {
+                                      SkillId = x.CategoryId,
+                                      SkillName = x.Category.Name,
+                                      IsApproved = x.IsApproved
+                                  })
+                              })
                              .ToList();
             return userSkills;
         }
@@ -69,6 +71,16 @@ namespace Infrastructure.Services
         {
             IEnumerable<User> result = userRepo.Query();
             return result;
+        }
+
+        public void RemoveSkill(int categoryId, int userId)
+        {
+            var modelToREmove =
+                userSkillRepo.Query().FirstOrDefault(x => x.UserId == userId && x.CategoryId == categoryId);
+            if (modelToREmove != null)
+            {
+                userSkillRepo.Remove(modelToREmove);
+            }
         }
 
         public void AddSkill(AddSkillModel model)

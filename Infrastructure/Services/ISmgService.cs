@@ -22,6 +22,8 @@ namespace Infrastructure.Services
 
         EmployeeDetailsResponse GetEmployeeDetails(int profileId);
 
+        Employee GetImpoyeeByProfileId(int profileId);
+
         void PopulateDataBase(bool includeDetails = false);
     }
 
@@ -59,7 +61,14 @@ namespace Infrastructure.Services
 
         public EmployeeDetailsResponse GetEmployeeDetails(int profileId)
         {
+            //todo: use profile id
             return Request<EmployeeDetailsResponse, EmployeeDetailsRequest>(new EmployeeDetailsRequest(User.AuthorizationToken, profileId));
+        }
+
+        public Employee GetImpoyeeByProfileId(int profileId)
+        {
+            var res = userRepo.Query().FirstOrDefault(t => t.ProfileId == profileId);
+            return res;
         }
 
         public void PopulateDataBase(bool includeDetails = false)

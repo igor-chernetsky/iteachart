@@ -10,13 +10,7 @@
 {
     <script>
         $(function () {
-            $("#CategoryId").select2();
-//            $('#saveCategory').on('click', function (e) {
-//                e.preventDefault();
-//                var catId = $('#CategoryId').val();
-//                var userId = $('#UserId').val();
-//
-//            })
+            $("select#CategoryId").select2();
         })
     </script>
 }
@@ -33,7 +27,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             <a href="#" class="thumbnail">
-                                <img class="profile-poster" src="@Url.Content("~/Content/img/no-poster.png")" alt="...">
+                                <img class="profile-poster" src="@Model.ImageUrl" alt="@Model.UserName @Model.UserLastName">
                             </a>
                         </div>
                         <div class="col-md-10 profile-username">
@@ -44,18 +38,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-10"><h4>@(Model.CanEdit?"My":"User") skills</h4></div>
+                        <div class="col-md-10 col-md-offset-2"><h4>@(Model.CanEdit ? "My" : "User's") skills</h4></div>
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-2">
                             @if (!Model.Skills.Any() && Model.CanEdit)
                             {
                                 <div class="alert alert-info">You haven't added any skills. We beleive that you are a good specialist and just forgot to add your skills.</div>
-                            } 
+                            }
                             @if (!Model.Skills.Any() && !Model.CanEdit)
                             {
-                                <div class="alert alert-info">User haven't added any skills. </div>
+                                <div class="alert alert-info">User hasn't added any skills. </div>
                             }
                             @for (var i = 0; i < Model.Skills.Count; i++)
                             {
@@ -64,7 +57,7 @@
                                 <div class="row">
                                     <div class="col-md-1">@(i + 1)</div>
                                     <div class="col-md-10">
-                                        @skill.SkillName
+                                        <span class="label label-info">@skill.SkillName</span>
                                         @if (@skill.SubSkills.Any())
                                         {
                                             foreach (var subSkill in skill.SubSkills)
@@ -74,13 +67,22 @@
                                                     <div class="col-md-5">
                                                         @if (subSkill.IsApproved)
                                                         {
-                                                            <span class="label label-success">Тест пройден</span>
+                                                            <span class="label label-success">Test completed</span>
                                                         }
                                                         else
                                                         {
-                                                            <span class="label label-default">Не подтвержден</span>
+                                                            <span class="label label-default">Not verified</span>
                                                         }
                                                     </div>
+                                                    @if (Model.CanEdit)
+                                                    {
+                                                        <div class="col-md-1">
+                                                            <form action="@Url.Action("RemoveSkill")">
+                                                                @Html.Hidden("CategoryId", subSkill.SkillId)
+                                                                <div class="col-md-1"><input type="submit" class="btn btn-xs btn-danger" value="Remove"/></div>
+                                                            </form>
+                                                        </div>
+                                                    }
                                                 </div>
                                             }
                                         }
@@ -89,13 +91,16 @@
                             }
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-offset-2 col-md-12">
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-                                Add a new skill
-                            </button>
+                    @if (Model.CanEdit)
+                    {
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-12">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                                    Add a new skill
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -105,48 +110,50 @@
         Здесь будет инфа, насколько хорошо ты знаешь сотрудников
     </div>
 </div>
+@if (Model.CanEdit)
+{
+    <div class="modal fade" style="display:none;" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add a new skill</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="@Url.Action("AddSkill")" method="POST">
+                        @Html.Hidden("UserId", Model.Id)
+                        Please, select your skill
+                        <div class="row">
+                            <div class="col-md-10">
+                                <select id="CategoryId" name="CategoryId" style="width: 100%;">
+                                    @foreach (IdNameParentModel item in ViewBag.Categories)
+                                    {
+                                        <optgroup label="@item.Name">
+                                            @foreach (var child in item.Childs)
+                                            {
+                                                <option value="@child.Id">@child.Name</option>
+                                            }
+                                        </optgroup>
+                                    }
+                                </select>
 
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Add a new skill</h4>
-            </div>
-            <div class="modal-body">
-                <form action="@Url.Action("AddSkill")" method="POST">
-                    @Html.Hidden("UserId", Model.Id)
-                    Please, select your skill
-                    <div class="row">
-                        <div class="col-md-10">
-                            <select id="CategoryId" name="CategoryId" style="width:100%;">
-                                @foreach (IdNameParentModel item in ViewBag.Categories)
-                                {
-                                    <optgroup label="@item.Name">
-                                        @foreach (var child in item.Childs)
-                                        {
-                                            <option value="@child.Id">@child.Name</option>
-                                        }
-                                    </optgroup>
-                                }
-                            </select>
-
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10" style="margin-top:10px;">
-                            <input type="submit" class="btn btn-primary btn-sm right" id="saveCategory" value="Save skill" />
+                        <div class="row">
+                            <div class="col-md-10" style="margin-top: 10px;">
+                                <input type="submit" class="btn btn-primary btn-sm right" id="saveCategory" value="Save skill" />
+                            </div>
                         </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="clearfix">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div class="clearfix">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
+}
