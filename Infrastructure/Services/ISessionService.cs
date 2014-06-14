@@ -63,7 +63,7 @@ namespace Infrastructure.Services
                 UserName = model.UserName
             };
 
-            if (dbUser != null)
+            if (dbUser == null)
             {
                /* smgService.PopulateDataBase(true);*/
                 dbUser = userRepo.Query().FirstOrDefault();

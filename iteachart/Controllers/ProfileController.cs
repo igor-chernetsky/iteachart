@@ -8,7 +8,7 @@ using Infrastructure.Services;
 
 namespace iteachart.Controllers
 {
-    public class ProfileController : Controller
+    public class ProfileController : BaseSecureController
     {
         private IUserService userService;
         private ICategoryService categoryService;
@@ -18,7 +18,14 @@ namespace iteachart.Controllers
             this.categoryService = categoryService;
         }
 
-        // GET: /Profile/
+        // GET: /Profile/1
+        public ActionResult My()
+        {
+            categoryService.FillDB();
+            var userInfo = FIllUserInfo(CurrentUser.Id);
+            return View("Index", userInfo);
+        }
+
         public ActionResult Index(int id)
         {
             var userInfo = FIllUserInfo(id);
@@ -29,6 +36,7 @@ namespace iteachart.Controllers
         {
             var userInfo = userService.GetUserInfo(id);
             userInfo.Skills = userService.GetUserSkills(id);
+            userInfo.CanEdit = id == CurrentUser.Id;
             var skillIds = userInfo.Skills.SelectMany(x => x.SubSkills.Select(s => s.SkillId));
             ViewBag.Categories = categoryService.GetCategoriesByParent(null).Select(x => new IdNameParentModel
             {
