@@ -77,6 +77,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EF\Mappings\CategoryMap.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Code\ISessionFactory.cs" />
     <Compile Include="DI\CoreRegistry.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Repositories\CrudRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Secure\SessionUser.cs" />
+    <Compile Include="Services\ICategoryService.cs" />
     <Compile Include="Services\ISessionService.cs" />
     <Compile Include="Services\ITestService.cs" />
   </ItemGroup>

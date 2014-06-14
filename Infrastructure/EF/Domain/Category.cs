@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.EF.Domain
 {
-    class Category
+    public class Category
     {
         public string Name { get; set; }
 

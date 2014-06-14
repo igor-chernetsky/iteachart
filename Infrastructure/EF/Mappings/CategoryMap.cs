@@ -3,13 +3,14 @@ using Infrastructure.EF.Domain;
 
 namespace Infrastructure.EF.Mappings
 {
-    public class UserMap : EntityTypeConfiguration<User>
+    public class CategoryMap : EntityTypeConfiguration<Category>
     {
-        public UserMap()
+        public CategoryMap()
         {
-            ToTable("T_User");
+            ToTable("T_Category");
             Property(x => x.Id).IsRequired();
-            Property(x => x.Login).IsRequired();
+            Property(x => x.Name).IsRequired();
+            Property(x => x.ParentId);
 
             HasKey(x => x.Id);
         }
