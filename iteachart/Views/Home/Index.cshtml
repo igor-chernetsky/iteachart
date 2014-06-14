@@ -20,21 +20,21 @@
             var depDefault = 'All Deps'
             var depDefaultId = -1
             this.searchExpr = ko.observable('')
+            this.currentDepId = ko.observable(depDefaultId)
             this.currentDep = ko.observable(depDefault)
             
-            var departments = @Html.Raw(depModel)
+            this.departmentsRaw = ko.observableArray(@Html.Raw(depModel))
 
-            this.deps = ko.observableArray(departments)
-
-            this.deps.push({Id: depDefaultId, Name: depDefault})
-            
-            
             this.orderedDeps = ko.computed(function() {
-                return self.deps.sort(function(left, right) { return left.Id == right.Id ? 0 : (left.Id < right.Id ? -1 : 1) })
+                var dbDeps = self.departmentsRaw().sort(function(left, right) { return left.Name == right.Name ? 0 : (left.Name < right.Name ? -1 : 1) })
+                
+                dbDeps.unshift({Id: depDefaultId, Name: depDefault})
+                return dbDeps
             })
             
             this.selectDep = function(item) {
                 self.currentDep(item.Name)
+                self.currentDepId(item.Id)
             }
 
             var model = @Html.Raw(jsModel)
@@ -42,9 +42,10 @@
 
             this.filteredItems =  ko.computed(function() {
                     var filter = self.searchExpr().toLowerCase();
-                    if (filter || self.currentDep() == depDefault) {
+                    if (filter || self.currentDepId() != depDefaultId) {
                         return ko.utils.arrayFilter(self.items(), function (item) {
-                            return item.FullName.toLowerCase().indexOf(filter) > -1 || item.DeptId == self.currentDep();
+                            return (!filter || item.FullName.toLowerCase().indexOf(filter.trim()) > -1) &&
+                                (!(self.currentDepId() != depDefaultId) || item.DeptId == self.currentDepId());
                         });
                     } else {
                         return self.items();

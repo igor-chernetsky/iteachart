@@ -24,6 +24,8 @@ namespace Infrastructure.Services
 
         Employee GetImpoyeeByProfileId(int profileId);
 
+        DepartmentResponse GetAllDepartments();
+
         void PopulateDataBase(bool includeDetails = false);
     }
 
@@ -34,10 +36,12 @@ namespace Infrastructure.Services
         private SessionUser User { get; set; }
 
         private readonly IRepository<User> userRepo;
+        private readonly IRepository<Department> depRepo;
 
-        public SmgService(IRepository<User> userRepo)
+        public SmgService(IRepository<User> userRepo, IRepository<Department> depRepo)
         {
             this.userRepo = userRepo;
+            this.depRepo = depRepo;
             User = (SessionUser) HttpContext.Current.Session[Constants.UserKey];
         }
 
@@ -71,9 +75,20 @@ namespace Infrastructure.Services
             return res;
         }
 
+        public DepartmentResponse GetAllDepartments()
+        {
+            var res  = Request<DepartmentResponse, DepartmentRequest>(new DepartmentRequest(User.AuthorizationToken));
+            foreach (var r in res.Depts)
+            {
+                depRepo.Add(r);
+            }
+            return res;
+        }
+
         public void PopulateDataBase(bool includeDetails = false)
         {
-            var employees = GetAllEmployees().Profiles;
+            var employees = GetAllEmployees().Profiles.Skip(257);
+            int i = 0;
             foreach (var e in employees)
             {
                 var old = userRepo.Query().FirstOrDefault(t => t.ProfileId == e.ProfileId);
@@ -140,6 +155,7 @@ namespace Infrastructure.Services
                     }
                     userRepo.Update(old);
                 }
+                i ++;
             }
         }
     }

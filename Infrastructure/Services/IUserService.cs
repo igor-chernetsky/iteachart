@@ -22,12 +22,14 @@ namespace Infrastructure.Services
     public class UserService : IUserService
     {
         private IRepository<User> userRepo;
+        private IRepository<Department> depRepo;
         private IRepository<UserSkill> userSkillRepo;
 
-        public UserService(IRepository<User> userRepo, IRepository<UserSkill> userSkillRepo)
+        public UserService(IRepository<User> userRepo, IRepository<UserSkill> userSkillRepo, IRepository<Department> depRepo)
         {
             this.userRepo = userRepo;
             this.userSkillRepo = userSkillRepo;
+            this.depRepo = depRepo;
         }
 
         public UserProfileModel GetUserInfo(int id)
@@ -88,10 +90,10 @@ namespace Infrastructure.Services
 
         public IList<IdNameModel> GetDepartments()
         {
-            return userRepo.Query().Select(s => new IdNameModel
+            return depRepo.Query().Select(s => new IdNameModel
             {
-                Id = s.DeptId,
-                Name = s.DeptId.ToString()
+                Id = s.Id,
+                Name = s.Name
             })
             .Distinct()
             .ToList();

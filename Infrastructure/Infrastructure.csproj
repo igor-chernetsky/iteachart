@@ -81,6 +81,7 @@
     <Compile Include="EF\Domain\UserSkill.cs" />
     <Compile Include="EF\Mappings\CategoryMap.cs" />
     <Compile Include="Code\Constants.cs" />
+    <Compile Include="EF\Mappings\DepartmentMap.cs" />
     <Compile Include="EF\Mappings\GuessedUserMap.cs" />
     <Compile Include="EF\Mappings\UserSkillMap.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
@@ -94,9 +95,12 @@
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Models\AddSkillModel.cs" />
     <Compile Include="Models\AuthenticationResponse.cs" />
+    <Compile Include="EF\Domain\Department.cs" />
     <Compile Include="Models\GuessUserModel.cs" />
     <Compile Include="Models\IdNameModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\Smg\DepartmentRequest.cs" />
+    <Compile Include="Models\Smg\DepartmentResponse.cs" />
     <Compile Include="Models\Smg\EmployeeDetails.cs" />
     <Compile Include="Models\Smg\EmployeeDetailsRequest.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
