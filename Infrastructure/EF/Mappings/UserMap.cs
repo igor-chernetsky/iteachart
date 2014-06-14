@@ -13,5 +13,15 @@ namespace Infrastructure.EF.Mappings
 
             HasKey(x => x.Id);
         }
+
+        public CategoryMap()
+        {
+            ToTable("T_Category");
+            Property(x=>x.Id).IsRequired();
+            Property(x=>x.Name).IsRequired();
+            Property(x=>x.ParentId);
+
+            HasKey(x=>x.Id);
+        }
     }
 }

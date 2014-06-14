@@ -10,10 +10,12 @@ namespace Infrastructure.Services
 
     public class TestService : ITestService
     {
-        private IRepository<User> userRepo; 
-        public TestService(IRepository<User> userRepo)
+        private IRepository<User> userRepo;
+        private IRepository<Category> categoryRepo;
+        public TestService(IRepository<User> userRepo, IRepository<Category> categoryRepo)
         {
             this.userRepo = userRepo;
+            this.categoryRepo = categoryRepo;
         }
 
         public void Test()
@@ -22,6 +24,14 @@ namespace Infrastructure.Services
             {
                 Login = "test!"
             });
+
+            categoryRepo.Add(new Category
+            {
+                Id = 1,
+                Name = ".NET"
+            });
         }
+
+
     }
 }
