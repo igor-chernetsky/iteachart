@@ -13,11 +13,13 @@ namespace Infrastructure.Services
     {
         UserProfileModel GetRandomUser(int id);
         IEnumerable<UserProfileModel> GetRandomUsers(int id);
+        void WriteStatistics(int id, int guessPerson, bool isGuessed);
     }
 
     public class GameService : IGameService
     {
         private IRepository<User> userRepo;
+        private IRepository<GuessedUser> guessUserRepo;
         private IUserService userService;
         public GameService(IRepository<User> userRepo, IUserService userService)
         {
@@ -53,6 +55,20 @@ namespace Infrastructure.Services
                 }
             }
             return randomIds.Select(randomId => userService.GetUserInfo(randomId));
+        }
+
+        public void WriteStatistics(int playerId, int guessPerson, bool isGuessed)
+        {
+            if (isGuessed)
+            {
+                var model = new GuessedUser
+                {
+                    PlayerId = playerId,
+                    GuessedId = guessPerson
+                };
+                guessUserRepo.Add(model);
+            }
+            
         }
     }
 }
