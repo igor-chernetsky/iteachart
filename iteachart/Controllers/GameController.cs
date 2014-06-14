@@ -23,6 +23,13 @@ namespace iteachart.Controllers
             return View(gameModel);
         }
 
+        public ActionResult IndexPartial()
+        {
+            var gameModel = GuessUserModel();
+            return PartialView(gameModel);
+            
+        }
+
         private GuessUserModel GuessUserModel()
         {
             var userToGuess = gameService.GetRandomUser(CurrentUser.Id);

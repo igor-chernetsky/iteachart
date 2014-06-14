@@ -255,6 +255,8 @@
     <Content Include="Views\Category\_Variants.cshtml" />
     <Content Include="Views\Quiz\Test.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
+    <Content Include="Views\Shared\GuessWho.cshtml" />
+    <Content Include="Views\Game\IndexPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

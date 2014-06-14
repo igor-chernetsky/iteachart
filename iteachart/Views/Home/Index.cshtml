@@ -1,4 +1,5 @@
-﻿@using ServiceStack
+﻿@using Infrastructure.Models
+@using ServiceStack
 @model IEnumerable<iteachart.Models.UserModel>
 
 @{
@@ -9,57 +10,198 @@
 @section scripts
 {
     
-<script type="text/javascript">
-    $(function() {
-        @{
-            var jsModel = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
-            var depModel = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Deps);
-        }
-        function ProfilesViewModel() {
-            var self = this
-            var depDefault = 'All Deps'
-            var depDefaultId = -1
-            this.searchExpr = ko.observable('')
-            this.currentDepId = ko.observable(depDefaultId)
-            this.currentDep = ko.observable(depDefault)
-            
-            this.departmentsRaw = ko.observableArray(@Html.Raw(depModel))
+    <script type="text/javascript">
+        $(function() {
+            @{
+                var jsModel = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+                var depModel = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Deps);
 
-            this.orderedDeps = ko.computed(function() {
-                var dbDeps = self.departmentsRaw().sort(function(left, right) { return left.Name == right.Name ? 0 : (left.Name < right.Name ? -1 : 1) })
-                
-                dbDeps.unshift({Id: depDefaultId, Name: depDefault})
-                return dbDeps
-            })
-            
-            this.selectDep = function(item) {
-                self.currentDep(item.Name)
-                self.currentDepId(item.Id)
             }
+            var isAuthenticated = '@Request.IsAuthenticated' == 'True'
+            var isFirstLogin = '@ViewBag.FirstLogin' == 'True'
 
-            var model = @Html.Raw(jsModel)
-            this.items = ko.observableArray(model)
+            function ProfilesViewModel() {
+                var self = this
+                var depDefault = 'All Deps'
+                var depDefaultId = -1
+                this.searchExpr = ko.observable('')
+                this.currentDepId = ko.observable(depDefaultId)
+                this.currentDep = ko.observable(depDefault)
 
-            this.filteredItems =  ko.computed(function() {
+                this.departmentsRaw = ko.observableArray(@Html.Raw(depModel))
+
+                this.orderedDeps = ko.computed(function() {
+                    var dbDeps = self.departmentsRaw().sort(function(left, right) { return left.Name == right.Name ? 0 : (left.Name < right.Name ? -1 : 1) })
+
+                    dbDeps.unshift({ Id: depDefaultId, Name: depDefault })
+                    return dbDeps
+                })
+
+                this.selectDep = function(item) {
+                    self.currentDep(item.Name)
+                    self.currentDepId(item.Id)
+                }
+
+                var model = @Html.Raw(jsModel)
+                this.items = ko.observableArray(model)
+
+                this.filteredItems = ko.computed(function() {
                     var filter = self.searchExpr().toLowerCase();
                     if (filter || self.currentDepId() != depDefaultId) {
-                        return ko.utils.arrayFilter(self.items(), function (item) {
+                        return ko.utils.arrayFilter(self.items(), function(item) {
                             return (!filter || item.FullName.toLowerCase().indexOf(filter.trim()) > -1) &&
                                 (!(self.currentDepId() != depDefaultId) || item.DeptId == self.currentDepId());
                         });
                     } else {
                         return self.items();
                     }
-            })
-            
-        }
-        var vm = new ProfilesViewModel()
-        var elem = $('#profiles').get(0)
-        ko.applyBindings(vm, elem)
+                })
 
-    })
-</script>
+            }
+
+            var vm = new ProfilesViewModel()
+            var elem = $('#profiles').get(0)
+            ko.applyBindings(vm, elem)
+            if (isAuthenticated && isFirstLogin) {
+
+                function GuessModel(data) {
+                    var self = this;
+                    self.GuessModel = ko.observable();
+                    self.Answers = ko.observableArray();
+                    self.selectedItem = ko.observable();
+                    self.selectedItem.subscribe(function(value) {
+                        if (value) {
+                            $.post('@Url.Action("WriteStatistic", "Game")', { guessPerson: self.GuessModel().Id, isGuessed: self.isGuessed() })
+                        }
+                    })
+                    self.itemIsSelected = ko.computed(function() {
+                        return self.selectedItem() > 0;
+                    })
+                    self.tryAgain = function() {
+                        $.getJSON('@Url.Action("Random", "Game")', function(data) {
+                            self.refresh(data);
+                        })
+                    }
+                    self.isGuessed = ko.computed(function() {
+                        if (self.selectedItem()) {
+                            return self.GuessModel().Id == +self.selectedItem();
+                        }
+                    })
+                    self.isNotGuessed = ko.computed(function() {
+                        if (self.selectedItem()) {
+                            return self.GuessModel().Id != +self.selectedItem();
+                        }
+                    })
+                    self.guessed = function(isGuessed) {
+                        self.isGuessed(isGuessed);
+                    }
+                    self.refresh = function(data) {
+                        self.GuessModel(data.UserToGuess);
+                        self.Answers(data.Choices)
+                        self.selectedItem(null);
+                    }
+
+                    if (data) {
+                        self.refresh(data);
+                    }
+                }
+
+                $('#myModalGame').modal('show')
+                $.getJSON('@Url.Action("Random", "Game")', function(data) {
+                    var vmGuess = new GuessModel(data)
+                    var elemGuess = $('#guessUserContainer').get(0)
+                    ko.applyBindings(vmGuess, elemGuess)
+                })
+               
+            }
+        })
+ 
+    </script>
+
+
 }
+
+<div class="modal fade"  id="myModalGame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Do you know who you work with?</h4>
+            </div>
+            <div class="modal-body">
+                @if (Request.IsAuthenticated)
+                {
+                <div id="guessUserContainer" class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                    <!-- ko with:GuessModel  -->
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <h4 class="text-center">Do you know this person?</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="text-center">
+                                        <a href="#">
+                                            <img data-bind="attr:{src:ImageUrl}">
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div data-bind="visible:$parent.itemIsSelected">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <h4 data-bind="text:UserFullName"></h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <div class="text-muted">Age: <span data-bind="text:Age"></span>, <span data-bind="text:Position"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <div data-bind="visible:itemIsSelected">
+                        <div class="row">
+                            <div class="col-md-12" data-bind="slideVisible:isGuessed">
+                                <div class="alert alert-success text-center">You win! </div>
+                            </div>
+                            <div class="col-md-12" data-bind="slideVisible:isNotGuessed">
+                                <div class="alert alert-danger text-center">You loose! </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ko foreach: Answers -->
+                    <div class="row">
+                        <div class="col-md-1">
+                            <input type="radio" name="choiceItem" data-bind="value:Id,attr:{id:Id},checked:$parent.selectedItem, disable:$parent.itemIsSelected()" />
+                        </div>
+                        <div class="col-md-10">
+                            <label data-bind="attr:{for:Id}"><span data-bind="text:UserFullName"></span></label>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+        </div>
+    </div>
+</div>
+
+                }
+            
+            </div>
+            <div class="modal-footer">
+                <div class="clearfix">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 
 <div id="profiles">
     <nav class="navbar navbar-default" role="navigation">
@@ -98,8 +240,8 @@
 
     <div data-bind="foreach: filteredItems" class="row">
         <div class="col-sm-6 col-md-4">
-            <div class="thumbnail" style="margin-bottom: 20px;">
-                <img class="profile-poster" data-bind="attr: {src: Image}" alt=" ...">
+            <div class="thumbnail">
+                <img data-bind="attr: {src: Image}" alt=" ...">
                 <div class="caption">
                     <h3 data-bind="text: FullName"><a data-bind="attr:{ href }"></a></h3>
                     <p>Department: <span data-bind="text: DeptName"></span></p>
