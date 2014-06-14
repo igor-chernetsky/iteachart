@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Models
+namespace Infrastructure.Secure
 {
-    public class LoginModel
+    [Serializable]
+    public class SessionUser
     {
         public string UserName { get; set; }
-        public string Password { get; set; }
+        public string AuthorizationToken { get; set; }
     }
 }
