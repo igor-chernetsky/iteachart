@@ -22,8 +22,9 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Profile", "Index", "Profile")</li>
+                        <li>@Html.ActionLink("Profile", "Index", "Profile", new { id= 1}, null)</li>
                         <li>@Html.ActionLink("Skills", "Index", "Category")</li>
+                        <li>@Html.ActionLink("Fill Users", "Index", "User")</li>
                     </ul>
                     <section id="login" class="navbar-right">
                         @Html.Partial("_LoginPartial")
@@ -41,6 +42,7 @@
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/select2")
         @RenderSection("scripts", required: false)
     </body>
 </html>

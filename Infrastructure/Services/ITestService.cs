@@ -20,7 +20,6 @@ namespace Infrastructure.Services
         {
             userRepo.Add(new User
             {
-                Login = "test!"
             });
         }
 

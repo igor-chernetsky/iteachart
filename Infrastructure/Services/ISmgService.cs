@@ -20,7 +20,9 @@ namespace Infrastructure.Services
     {
         EmployeeResponse GetAllEmployees();
 
-        void PopulateDataBase();
+        EmployeeDetailsResponse GetEmployeeDetails(int profileId);
+
+        void PopulateDataBase(bool includeDetails = false);
     }
 
     public class SmgService : ISmgService
@@ -55,7 +57,12 @@ namespace Infrastructure.Services
             return Request<EmployeeResponse, AllEmployeesRequest>(new AllEmployeesRequest(User.AuthorizationToken));
         }
 
-        public void PopulateDataBase()
+        public EmployeeDetailsResponse GetEmployeeDetails(int profileId)
+        {
+            return Request<EmployeeDetailsResponse, EmployeeDetailsRequest>(new EmployeeDetailsRequest(User.AuthorizationToken, profileId));
+        }
+
+        public void PopulateDataBase(bool includeDetails = false)
         {
             var employees = GetAllEmployees().Profiles;
             foreach (var e in employees)
@@ -63,19 +70,36 @@ namespace Infrastructure.Services
                 var old = userRepo.Query().FirstOrDefault(t => t.ProfileId == e.ProfileId);
                 if (old == null)
                 {
-                    userRepo.Add(new User
+                    var user = new User
                     {
-                        DeptId       = e.DeptId,
-                        FirstName    = e.FirstName,
+                        DeptId = e.DeptId,
+                        FirstName = e.FirstName,
                         FirstNameEng = e.FirstNameEng,
-                        IsEnabled    = e.IsEnabled,
-                        LastName     = e.LastName,
-                        LastNameEng  = e.LastNameEng,
+                        IsEnabled = e.IsEnabled,
+                        LastName = e.LastName,
+                        LastNameEng = e.LastNameEng,
                         Image = e.Image,
-                        Position     = e.Position,
-                        ProfileId    = e.ProfileId,
-                        Room         = e.Room
-                    });
+                        Position = e.Position,
+                        ProfileId = e.ProfileId,
+                        Room = e.Room
+                    };
+                    if (includeDetails)
+                    {
+                        var details = GetEmployeeDetails(user.ProfileId);
+                        if (details != null && details.Profile != null)
+                        {
+                            var profile = details.Profile;
+                            user.MiddleName = profile.MiddleName;
+                            user.Birthday   = profile.Birthday;
+                            user.Skype      = profile.Skype;
+                            user.Phone      = profile.Phone;
+                            user.DomenName  = profile.DomenName;
+                            user.Rank       = profile.Rank;
+                            user.Email      = profile.Email;
+                        }
+                    }
+
+                    userRepo.Add(user);
                 }
                 else
                 {
@@ -89,6 +113,22 @@ namespace Infrastructure.Services
                     old.Position     = e.Position;
                     old.ProfileId    = e.ProfileId;
                     old.Room         = e.Room;
+
+                    if (includeDetails)
+                    {
+                        var details = GetEmployeeDetails(old.ProfileId);
+                        if (details != null && details.Profile != null)
+                        {
+                            var profile = details.Profile;
+                            old.MiddleName = profile.MiddleName;
+                            old.Birthday   = profile.Birthday;
+                            old.Skype      = profile.Skype;
+                            old.Phone      = profile.Phone;
+                            old.DomenName  = profile.DomenName;
+                            old.Rank       = profile.Rank;
+                            old.Email      = profile.Email;
+                        }
+                    }
                     userRepo.Update(old);
                 }
             }

@@ -9,7 +9,6 @@ namespace Infrastructure.EF.Mappings
         {
             ToTable("T_User");
             Property(x => x.Id).IsRequired();
-            Property(x => x.Login);
             Property(x => x.ProfileId);
             Property(x => x.FirstName);
             Property(x => x.LastName);

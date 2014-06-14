@@ -11,7 +11,7 @@ namespace Infrastructure.Services
     {
         UserProfileModel GetUserInfo(int userId);
         List<UserProfileSkill> GetUserSkills(int userId);
-
+        void AddSkill(AddSkillModel model);
         IEnumerable<User> GetUsersList();
     }
 
@@ -20,9 +20,10 @@ namespace Infrastructure.Services
         private IRepository<User> userRepo;
         private IRepository<UserSkill> userSkillRepo;
 
-        public UserService(IRepository<User> userRepo)
+        public UserService(IRepository<User> userRepo, IRepository<UserSkill> userSkillRepo)
         {
             this.userRepo = userRepo;
+            this.userSkillRepo = userSkillRepo;
         }
 
         public UserProfileModel GetUserInfo(int id)
@@ -35,6 +36,7 @@ namespace Infrastructure.Services
             var model = new UserProfileModel
             {
                 //todo add real data from user object
+                Id = id,
                 UserName = user.FirstNameEng,
                 UserLastName = user.LastNameEng,
                 Age = 26,
@@ -53,6 +55,7 @@ namespace Infrastructure.Services
                                  SkillName = skillsGrouped.Key.Name,
                                  SubSkills = skillsGrouped.Select(x=>new UserProfileSubSkill
                                  {
+                                     SkillId = x.CategoryId,
                                      SkillName = x.Category.Name,
                                      IsApproved = x.IsApproved
                                  })
@@ -66,6 +69,15 @@ namespace Infrastructure.Services
         {
             IEnumerable<User> result = userRepo.Query();
             return result;
+        }
+
+        public void AddSkill(AddSkillModel model)
+        {
+            userSkillRepo.Add(new UserSkill
+            {
+                CategoryId = model.CategoryId,
+                UserId = model.UserId
+            });
         }
     }
 }
