@@ -77,8 +77,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EF\Domain\UserSkill.cs" />
     <Compile Include="EF\Mappings\CategoryMap.cs" />
     <Compile Include="Code\Constants.cs" />
+    <Compile Include="EF\Mappings\UserSkillMap.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Code\ISessionFactory.cs" />
     <Compile Include="DI\CoreRegistry.cs" />

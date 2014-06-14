@@ -9,7 +9,7 @@ namespace Infrastructure.Models
             SubSkills = new List<UserProfileSubSkill>();
         }
         public string SkillName { get; set; }
-        public List<UserProfileSubSkill> SubSkills { get; set; }
+        public IEnumerable<UserProfileSubSkill> SubSkills { get; set; }
 
     }
 }

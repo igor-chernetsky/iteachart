@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Infrastructure.EF.Domain;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
@@ -15,6 +16,7 @@ namespace Infrastructure.Services
     public class UserService : IUserService
     {
         private IRepository<User> userRepo;
+        private IRepository<UserSkill> userSkillRepo;
 
         public UserService(IRepository<User> userRepo)
         {
@@ -41,74 +43,20 @@ namespace Infrastructure.Services
 
         public List<UserProfileSkill> GetUserSkills(int userId)
         {
-            var skills = new List<UserProfileSkill>();
-
-            skills.Add(
-                    new UserProfileSkill
-                    {
-                        SkillName = ".NET",
-                        SubSkills = new List<UserProfileSubSkill>
-                        {
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "WinForms",
-                                IsApproved = true
-                            },
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "ASP.NET",
-                                IsApproved = true
-                            },
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "WCF",
-                                IsApproved = false
-                            },
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "WPF",
-                                IsApproved = true
-                            },
-                    }
-                    });
-            skills.Add(
-                    new UserProfileSkill
-                    {
-                        SkillName = "CSS",
-                        SubSkills = new List<UserProfileSubSkill>
-                        {
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "CSS3",
-                                IsApproved = true
-                            },
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "CSS Best practice",
-                                IsApproved = true
-                            }
-                    }
-                    });
-
-            skills.Add(
-                    new UserProfileSkill
-                    {
-                        SkillName = "Javascript",
-                        SubSkills = new List<UserProfileSubSkill>
-                        {
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "Knockout",
-                                IsApproved = true
-                            },
-                            new UserProfileSubSkill
-                            {
-                                SkillName = "AngularJS",
-                                IsApproved = true
-                            }
-                    }
-                    });
-            return skills;
+            var userSkills = (from skill in userSkillRepo.Query()
+                             where skill.UserId == userId
+                             group skill by skill.Category.ParentCategory into skillsGrouped
+                             select new UserProfileSkill
+                             {
+                                 SkillName = skillsGrouped.Key.Name,
+                                 SubSkills = skillsGrouped.Select(x=>new UserProfileSubSkill
+                                 {
+                                     SkillName = x.Category.Name,
+                                     IsApproved = x.IsApproved
+                                 })
+                             })
+                             .ToList();
+            return userSkills;
         }
     }
 }

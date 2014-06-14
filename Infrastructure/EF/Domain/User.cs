@@ -11,5 +11,6 @@ namespace Infrastructure.EF.Domain
     {
         public int Id { get; set; }
         public string Login { get; set; }
+        public virtual ICollection<UserSkill> AddedSkills { get; set; }
     }
 }
