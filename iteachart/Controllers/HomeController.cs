@@ -23,7 +23,9 @@ namespace iteachart.Controllers
         {
             ViewBag.Deps = userService.GetDepartments();
 
-            var users = userService.GetUsersList().Select(s => new UserModel
+            var users = userService.GetUsersList()
+                .ToList()
+                .Select(s => new UserModel
             {
                 ProfileId = s.ProfileId,
                 FirstName = s.FirstName,
@@ -35,7 +37,8 @@ namespace iteachart.Controllers
                 IsEnabled = s.IsEnabled,
                 Position = s.Position,
                 Room = s.Room,
-                DeptId = s.DeptId
+                DeptId = s.DeptId,
+                DeptName = s.Department.Name
             }).ToList();
             return View(users);
         }

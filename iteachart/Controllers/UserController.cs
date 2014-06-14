@@ -29,6 +29,7 @@ namespace iteachart.Controllers
             try
             {
                 var res = smgeService.GetAllEmployees();
+                smgeService.GetAllDepartments();
                 smgeService.PopulateDataBase(false);
             }
             catch (Exception)
