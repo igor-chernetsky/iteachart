@@ -30,6 +30,9 @@ namespace iteachart
                       "~/Content/bootstrap.css",
                       "~/Content/css/select2.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/test").Include(
+                      "~/Scripts/viewmodels/testViewModel.js"));
         }
     }
 }

@@ -159,12 +159,13 @@ namespace iteachart.Controllers
                 Question question = new Question
                 {
                     QuestionString = collection["QuestionString"],
-                    Answer = collection["Answer"]
+                    Answer = collection["Answer"],
+                    CategoryId = int.Parse(collection["CategoryId"])
                 };
 
                 
                 questionService.CreateQuestion(question);
-                return RedirectToAction("Index", new { Id = question.CategoryId });
+                return RedirectToAction("Edit", new { Id = question.CategoryId });
             }
             catch
             {

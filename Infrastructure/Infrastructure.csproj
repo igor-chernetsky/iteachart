@@ -78,9 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\QuestionTypes.cs" />
+    <Compile Include="EF\Domain\Attempt.cs" />
     <Compile Include="EF\Domain\Question.cs" />
     <Compile Include="EF\Domain\UserSkill.cs" />
     <Compile Include="EF\Domain\Variant.cs" />
+    <Compile Include="EF\Mappings\AttemptsMap.cs" />
     <Compile Include="EF\Mappings\CategoryMap.cs" />
     <Compile Include="Code\Constants.cs" />
     <Compile Include="EF\Mappings\QuestionMap.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Repositories\CrudRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Secure\SessionUser.cs" />
+    <Compile Include="Services\IAttemptService.cs" />
     <Compile Include="Services\ICategoryService.cs" />
     <Compile Include="Services\IQuestionService.cs" />
     <Compile Include="Services\ISessionService.cs" />

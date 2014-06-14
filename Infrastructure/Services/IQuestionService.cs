@@ -19,6 +19,7 @@ namespace Infrastructure.Services
         void DeleteQuestion(int id);
         Question GetQuestion(int id);
         IEnumerable<Question> GetQuestionsByCategory(int categoryId, int? limit = null);
+        bool CheckAnswer(int questionId, ref string answer);
     }
 
     public class QuestionService: IQuestionService
@@ -80,6 +81,15 @@ namespace Infrastructure.Services
         public Question GetQuestion(int id)
         {
             Question result = questionRepo.Get(id);
+            return result;
+        }
+
+
+        public bool CheckAnswer(int questionId, ref string answer)
+        {
+            Question q = questionRepo.Get(questionId);
+            bool result = q.Answer.Trim() == answer;
+            answer = q.Answer.Trim();
             return result;
         }
     }

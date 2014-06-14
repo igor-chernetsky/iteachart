@@ -13,7 +13,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Question</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
@@ -21,19 +20,19 @@
         <div class="form-group">
             @Html.LabelFor(model => model.QuestionString, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.QuestionString)
+                @Html.TextAreaFor(model => model.QuestionString, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.QuestionString)
             </div>
         </div>
 
-        <div class="form-group @(Model.Type== Infrastructure.Code.QuestionTypes.checkbox ? "hidden" : "")">
+        <div class="form-group @(Model.Type != Infrastructure.Code.QuestionTypes.text ? "hidden" : "")">
             @Html.LabelFor(model => model.Answer, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Answer)
+                @Html.TextAreaFor(model => model.Answer, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Answer)
             </div>
         </div>
-        <div class="form-group @(Model.Type== Infrastructure.Code.QuestionTypes.text ? "hidden" : "")">
+        <div class="form-group @(Model.Type != Infrastructure.Code.QuestionTypes.checkbox ? "hidden" : "")">
             @Html.Partial("_Variants", Model.Variants)
         </div>
         @Html.HiddenFor(model => model.CategoryId)
@@ -47,7 +46,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Edit", new { id = Model.CategoryId }, new { @class = "btn btn-default" })
 </div>
 
 @section Scripts {

@@ -13,6 +13,6 @@ namespace Infrastructure.EF.Domain
         public int Id { get; set; }
         public virtual ICollection<UserSkill> AddedSkills { get; set; }
 
-
+        public virtual ICollection<Attempt> Attempts { get; set; }
     }
 }

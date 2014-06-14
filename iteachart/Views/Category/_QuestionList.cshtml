@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Infrastructure.EF.Domain.Question>
 
 <p>
-    @Html.ActionLink("Create New", "CreateQuestion", new { categoryId = ViewBag.categoryId })
+    @Html.ActionLink("Create New", "CreateQuestion", new { categoryId = ViewBag.categoryId }, new { @class = "btn btn-default" })
 </p>
 <table class="table">
     <tr>
@@ -17,8 +17,8 @@
             @Html.DisplayFor(modelItem => item.QuestionString)
         </td>
         <td>
-            @Html.ActionLink("Edit", "EditQuestion", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "DeleteQuestion", new { categoryId = item.CategoryId, id = item.Id })
+            @Html.ActionLink("Edit", "EditQuestion", new { id = item.Id }, new { @class = "btn btn-default" }) 
+            @Html.ActionLink("Delete", "DeleteQuestion", new { categoryId = item.CategoryId, id = item.Id }, new { @class = "btn btn-default" })
         </td>
     </tr>
 }
