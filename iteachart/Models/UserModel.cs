@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace Infrastructure.Models.Smg
+namespace iteachart.Models
 {
-
-    public class EmployeeResponse : BaseResponse
+    public class UserModel
     {
-        public IList<Employee> Profiles { get; set; }
-    }
+        public int Id { get; set; }
 
-    public class Employee : EmployeeDetails
-    {
         public int ProfileId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -25,6 +19,6 @@ namespace Infrastructure.Models.Smg
         public int DeptId { get; set; }
         public string Image { get; set; }
         public bool IsEnabled { get; set; }
-
+        public string FullName { get { return FirstNameEng + " " + LastNameEng; } }
     }
 }
