@@ -33,7 +33,7 @@ namespace Infrastructure.Services
         private T Request<T, T1>(T1 r) where T1 : BaseRequest
         {
             var request =
-                WebRequest.Create(r.ToString());
+                WebRequest.Create(baseUrl + r.ToString());
 
             WebResponse wr = request.GetResponse();
             Stream receiveStream = wr.GetResponseStream();
