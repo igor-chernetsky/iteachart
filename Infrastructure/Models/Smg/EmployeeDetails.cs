@@ -19,7 +19,6 @@ namespace Infrastructure.Models.Smg
         public string Phone { get; set; }
         public string DomenName { get; set; }
         public string Rank { get; set; }
-        public string Room { get; set; }
         public string Email { get; set; }
     }
 }

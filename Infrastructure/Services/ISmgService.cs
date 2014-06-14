@@ -22,7 +22,7 @@ namespace Infrastructure.Services
 
         EmployeeDetailsResponse GetEmployeeDetails(int profileId);
 
-        void PopulateDataBase();
+        void PopulateDataBase(bool includeDetails = false);
     }
 
     public class SmgService : ISmgService
@@ -62,7 +62,7 @@ namespace Infrastructure.Services
             return Request<EmployeeDetailsResponse, EmployeeDetailsRequest>(new EmployeeDetailsRequest(User.AuthorizationToken, profileId));
         }
 
-        public void PopulateDataBase()
+        public void PopulateDataBase(bool includeDetails = false)
         {
             var employees = GetAllEmployees().Profiles;
             foreach (var e in employees)
@@ -83,24 +83,23 @@ namespace Infrastructure.Services
                         ProfileId = e.ProfileId,
                         Room = e.Room
                     };
-
-                    var details = GetEmployeeDetails(user.ProfileId);
-                    if (details != null)
+                    if (includeDetails)
                     {
-                        var profile = details.Profile;
-                        user.MiddleName = profile.MiddleName;
-                        user.Birthday   = profile.Birthday;
-                        user.Skype      = profile.Skype;
-                        user.Phone      = profile.Phone;
-                        user.DomenName  = profile.DomenName;
-                        user.Rank       = profile.Rank;
-                        user.Room       = profile.Room;
-                        user.Email      = profile.Email;
+                        var details = GetEmployeeDetails(user.ProfileId);
+                        if (details != null && details.Profile != null)
+                        {
+                            var profile = details.Profile;
+                            user.MiddleName = profile.MiddleName;
+                            user.Birthday   = profile.Birthday;
+                            user.Skype      = profile.Skype;
+                            user.Phone      = profile.Phone;
+                            user.DomenName  = profile.DomenName;
+                            user.Rank       = profile.Rank;
+                            user.Email      = profile.Email;
+                        }
                     }
-                   
-                    userRepo.Add(user);
 
-                    
+                    userRepo.Add(user);
                 }
                 else
                 {
@@ -114,20 +113,23 @@ namespace Infrastructure.Services
                     old.Position     = e.Position;
                     old.ProfileId    = e.ProfileId;
                     old.Room         = e.Room;
-                    var details = GetEmployeeDetails(old.ProfileId);
-                    if (details != null)
+
+                    if (includeDetails)
                     {
-                        var profile = details.Profile;
-                        old.MiddleName = profile.MiddleName;
-                        old.Birthday   = profile.Birthday;
-                        old.Skype      = profile.Skype;
-                        old.Phone      = profile.Phone;
-                        old.DomenName  = profile.DomenName;
-                        old.Rank       = profile.Rank;
-                        old.Room       = profile.Room;
-                        old.Email      = profile.Email;
-                        userRepo.Update(old);
+                        var details = GetEmployeeDetails(old.ProfileId);
+                        if (details != null && details.Profile != null)
+                        {
+                            var profile = details.Profile;
+                            old.MiddleName = profile.MiddleName;
+                            old.Birthday   = profile.Birthday;
+                            old.Skype      = profile.Skype;
+                            old.Phone      = profile.Phone;
+                            old.DomenName  = profile.DomenName;
+                            old.Rank       = profile.Rank;
+                            old.Email      = profile.Email;
+                        }
                     }
+                    userRepo.Update(old);
                 }
             }
         }
