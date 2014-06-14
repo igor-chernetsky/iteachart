@@ -1,0 +1,50 @@
+﻿@using ServiceStack
+@model Infrastructure.Models.GuessUserModel
+
+@{
+    ViewBag.Title = "Guess Who It Is";
+}
+
+@section scripts
+{
+    <script>
+        $(function () {
+            var data =@Html.Raw(Model.ToJson())
+            var vm = new GuessModel(data)
+            var elem = $('#guessUserContainer').get(0)
+            ko.applyBindings(vm, elem)
+        })
+        function GuessModel(data) {
+            var self = this;
+            self.GuessModel = ko.observable();
+            self.Answers = ko.observableArray();
+            self.refresh = function(data) {
+                self.GuessModel(data.UserToGuess);
+                self.Answers(data.Choices)
+            }
+            if (data) {
+                self.refresh(data);
+            }
+        }
+    </script>
+}
+<div id="guessUserContainer" class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5">
+                    <h4>Do you know this person?</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <p class="text-center">
+                        <a href="#" class="thumbnail" data-bind="with:GuessModel">
+                            <img data-bind="attr:{src:ImageUrl}">
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

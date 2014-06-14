@@ -12,10 +12,11 @@ namespace iteachart.Controllers
     public class HomeController : Controller
     {
         private readonly IUserService userService;
-
-        public HomeController(IUserService userService)
+        private ISessionService sessionService;
+        public HomeController(IUserService userService, ISessionService sessionService)
         {
             this.userService = userService;
+            this.sessionService = sessionService;
         }
 
         public ActionResult Index()

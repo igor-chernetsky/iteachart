@@ -100,7 +100,7 @@ namespace Infrastructure.Services
         public void LogOut()
         {
             FormsAuthentication.SignOut();
-            HttpContext.Current.Session[Constants.UserKey] = null;
+            HttpContext.Current.Session.Abandon();
         }
 
         public bool IsLoggedIn()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Infrastructure.EF.Domain;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
@@ -14,6 +15,7 @@ namespace Infrastructure.Services
         void AddSkill(AddSkillModel model);
         IEnumerable<User> GetUsersList();
         void RemoveSkill(int categoryId, int id);
+
     }
 
     public class UserService : IUserService
@@ -40,7 +42,7 @@ namespace Infrastructure.Services
                 Id = id,
                 UserName = user.FirstNameEng,
                 UserLastName = user.LastNameEng,
-                Age = (DateTime.Now - user.Birthday).Days/365,
+                Age = (DateTime.Now - user.Birthday).Days / 365,
                 ImageUrl = user.Image,
                 Position = user.Position
             };
@@ -82,6 +84,8 @@ namespace Infrastructure.Services
                 userSkillRepo.Remove(modelToREmove);
             }
         }
+
+
 
         public void AddSkill(AddSkillModel model)
         {
