@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Infrastructure.Code;
+using Infrastructure.Secure;
 using Infrastructure.Services;
 using StructureMap;
 
@@ -12,6 +13,8 @@ namespace iteachart.Controllers
     public class BaseSecureController : Controller
     {
         readonly ISessionService session;
+
+        private SessionUser User { get { return (SessionUser)System.Web.HttpContext.Current.Session[Constants.UserKey]; } }
 
         public BaseSecureController()
         {
