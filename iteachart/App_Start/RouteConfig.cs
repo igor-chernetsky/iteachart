@@ -13,6 +13,10 @@ namespace iteachart
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute(name: "single", url: "{controller}/{id}",
+            defaults: new { controller = "Home", action = "Index" },
+                                         constraints: new { id = @"^[0-9]+$" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
