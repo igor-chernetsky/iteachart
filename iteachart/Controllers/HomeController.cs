@@ -9,16 +9,13 @@ namespace iteachart.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ITestService test;
-
-        public HomeController(ITestService test)
+        public HomeController()
         {
-            this.test = test;
+            
         }
 
         public ActionResult Index()
         {
-            test.Test();
             return View();
         }
 

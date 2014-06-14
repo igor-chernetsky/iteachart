@@ -1,0 +1,75 @@
+﻿@using Microsoft.Ajax.Utilities
+@model Infrastructure.Models.UserProfileModel
+
+@{
+    ViewBag.Title = "Мой профиль";
+}
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#profile" data-toggle="tab">IT Profile</a></li>
+    <li><a href="#social" data-toggle="tab">Social</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="profile">
+        <div class="row">
+            <div class="panel panel-info">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a href="#" class="thumbnail">
+                                <img class="profile-poster" src="@Url.Content("~/Content/img/no-poster.png")" alt="...">
+                            </a>
+                        </div>
+                        <div class="col-md-10 profile-username">
+                            <h3>@Model.UserName</h3>
+                            <div class="text-muted">@Model.Department, @Model.Position</div>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10"><h4>My skills</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-2">
+                            @for (var i = 0; i < Model.Skills.Count; i++)
+                            {
+                                var skill = Model.Skills[i];
+
+                                <div class="row">
+                                    <div class="col-md-1">@(i + 1)</div>
+                                    <div class="col-md-10">
+                                        @skill.SkillName
+                                        @if (@skill.SubSkills.Any())
+                                        {
+                                            foreach (var subSkill in skill.SubSkills)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-5 col-md-offset-1">@subSkill.SkillName</div>
+                                                    <div class="col-md-5">
+                                                        @if (subSkill.IsApproved)
+                                                        {
+                                                            <span class="label label-success">Тест пройден</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="label label-default">Не подтвержден</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="social">
+        Здесь будет инфа, насколько хорошо ты знаешь сотрудников
+    </div>
+</div>
+
