@@ -37,7 +37,7 @@
             <img src="@item.Image" alt="Image" />
         </td>
         <td>
-            @Html.ActionLink(item.FirstNameEng + " " + item.LastNameEng, "Details", "Profile")
+            <a href="@Url.Action("Index", "Profile", new { id = item.Id })">@item.FirstNameEng @item.LastNameEng</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Position)
