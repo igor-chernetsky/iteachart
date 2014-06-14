@@ -13,24 +13,44 @@
     $(function() {
         @{
             var jsModel = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+            var depModel = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Deps);
         }
         function ProfilesViewModel() {
             var self = this
-            
+            var depDefault = 'All Deps'
+            var depDefaultId = -1
             this.searchExpr = ko.observable('')
+            this.currentDep = ko.observable(depDefault)
+            
+            var departments = @Html.Raw(depModel)
+
+            this.deps = ko.observableArray(departments)
+
+            this.deps.push({Id: depDefaultId, Name: depDefault})
+            
+            
+            this.orderedDeps = ko.computed(function() {
+                return self.deps.sort(function(left, right) { return left.Id == right.Id ? 0 : (left.Id < right.Id ? -1 : 1) })
+            })
+            
+            this.selectDep = function(item) {
+                self.currentDep(item.Name)
+            }
+
             var model = @Html.Raw(jsModel)
             this.items = ko.observableArray(model)
 
             this.filteredItems =  ko.computed(function() {
                     var filter = self.searchExpr().toLowerCase();
-                    if (!filter) {
+                    if (!filter && self.currentDep() == depDefault) {
                         return self.items();
                     } else {
                         return ko.utils.arrayFilter(self.items(), function (item) {
-                            return item.FullName.toLowerCase().indexOf(filter) > -1;
+                            return item.FullName.toLowerCase().indexOf(filter) > -1 && item.DeptId == self.currentDep();
                         });
                     }
             })
+            
         }
         var vm = new ProfilesViewModel()
         var elem = $('#profiles').get(0)
@@ -56,29 +76,15 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
-                @* <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
+
+                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span data-bind="text: currentDep"></span><b class="caret"></b></a>
+                        <ul class="dropdown-menu" data-bind="foreach: orderedDeps">
+                            <li data-bind="click: $parent.selectDep"><a href="#"><span data-bind="text: Name"></span></a></li>
                         </ul>
                     </li>
-                </ul>*@
+                </ul>
                 <div class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" data-bind="value: searchExpr" placeholder="Type to search...">
@@ -94,10 +100,10 @@
             <div class="thumbnail">
                 <img data-bind="attr: {src: Image}" alt=" ...">
                 <div class="caption">
-                    <h3 data-bind="text: FullName"></h3>
+                    <h3 data-bind="text: FullName"><a data-bind="attr:{ href }"></a></h3>
                     <p>Department: <span data-bind="text: DeptId"></span></p>
                     <p>Position: <span data-bind="text: Position"></span></p>
-                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                    <p><a data-bind="attr: { href: ProfileLink }" class="btn btn-primary" role="button">View Profile</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
                 </div>
             </div>
         </div>

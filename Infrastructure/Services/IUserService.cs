@@ -16,6 +16,7 @@ namespace Infrastructure.Services
         IEnumerable<User> GetUsersList();
         void RemoveSkill(int categoryId, int id);
 
+        IList<IdNameModel> GetDepartments();
     }
 
     public class UserService : IUserService
@@ -85,7 +86,16 @@ namespace Infrastructure.Services
             }
         }
 
-
+        public IList<IdNameModel> GetDepartments()
+        {
+            return userRepo.Query().Select(s => new IdNameModel
+            {
+                Id = s.DeptId,
+                Name = s.DeptId.ToString()
+            })
+            .Distinct()
+            .ToList();
+        }
 
         public void AddSkill(AddSkillModel model)
         {

@@ -20,5 +20,7 @@ namespace iteachart.Models
         public string Image { get; set; }
         public bool IsEnabled { get; set; }
         public string FullName { get { return FirstNameEng + " " + LastNameEng; } }
+
+        public string ProfileLink { get { return "/Profile/Index/" + Id; } }
     }
 }
