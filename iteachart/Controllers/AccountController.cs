@@ -9,7 +9,6 @@ namespace iteachart.Controllers
 {
     public class AccountController : BaseSecureController
     {
-
         public ActionResult Login(LoginModel model)
         {
             return View();

@@ -1,32 +1,52 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
+using Infrastructure.EF;
 
 namespace Infrastructure.Repositories
 {
     public class CrudRepository<T> : IRepository<T> where T : class
     {
-        public CrudRepository()
+        private readonly MyDbContext context;
+
+        protected DbSet<T> Set
         {
-            
+            get { return context.Set<T>(); }
         }
 
-        public void Add(T item)
+        public CrudRepository(MyDbContext context)
         {
-            throw new System.NotImplementedException();
+            this.context = context;
         }
 
-        public void Update(T item)
+        public T Get(object id)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Remove(T item)
-        {
-            throw new System.NotImplementedException();
+            var item = Set.Find(id);
+            return item;
         }
 
         public IQueryable<T> Query()
         {
-            throw new System.NotImplementedException();
+            return Set.AsQueryable();
+        }
+
+        public void Add(T entity)
+        {
+            Set.Add(entity);
+            context.SaveChanges();
+        }
+
+        public void Update(T entity)
+        {
+            var attachedEntity = Set.Attach(entity);
+            context.Entry(attachedEntity).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+
+        public void Remove(T entity)
+        {
+            var attachedEntity = Set.Attach(entity);
+            context.Entry(attachedEntity).State = EntityState.Deleted;
+            context.SaveChanges();
         }
     }
 }

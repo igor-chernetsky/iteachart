@@ -1,16 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iteachart", "iteachart\iteachart.csproj", "{BB44B679-8990-4C1C-919A-31333B432653}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3600B7FE-E5C3-4D44-B1A8-2A32DDD0E251}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{1B1421DC-BE29-4FCC-9C82-880C9002B9DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +17,10 @@ Global
 		{BB44B679-8990-4C1C-919A-31333B432653}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB44B679-8990-4C1C-919A-31333B432653}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB44B679-8990-4C1C-919A-31333B432653}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B1421DC-BE29-4FCC-9C82-880C9002B9DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B1421DC-BE29-4FCC-9C82-880C9002B9DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B1421DC-BE29-4FCC-9C82-880C9002B9DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B1421DC-BE29-4FCC-9C82-880C9002B9DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

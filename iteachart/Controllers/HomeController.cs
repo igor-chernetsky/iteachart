@@ -18,7 +18,7 @@ namespace iteachart.Controllers
 
         public ActionResult Index()
         {
-
+            test.Test();
             return View();
         }
 
