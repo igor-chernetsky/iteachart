@@ -8,7 +8,7 @@ using Infrastructure.Services;
 
 namespace iteachart.Controllers
 {
-    public class ProfileController : BaseSecureController
+    public class ProfileController : Controller
     {
         private IUserService userService;
         private ICategoryService categoryService;
@@ -19,11 +19,40 @@ namespace iteachart.Controllers
         }
 
         // GET: /Profile/
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            var userInfo = userService.GetUserInfo(1);
-            userInfo.Skills = userService.GetUserSkills(1);
+            var userInfo = FIllUserInfo(id);
             return View(userInfo);
+        }
+
+        private UserProfileModel FIllUserInfo(int id)
+        {
+            var userInfo = userService.GetUserInfo(id);
+            userInfo.Skills = userService.GetUserSkills(id);
+            var skillIds = userInfo.Skills.SelectMany(x => x.SubSkills.Select(s => s.SkillId));
+            ViewBag.Categories = categoryService.GetCategoriesByParent(null).Select(x => new IdNameParentModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Childs = x.ChildCategories.Where(a => !skillIds.Contains(a.Id)).Select(c => new IdNameModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                }).ToList()
+            }).ToList();
+            return userInfo;
+        }
+
+        public ActionResult AddSkill(AddSkillModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                userService.AddSkill(model);
+                return RedirectToAction("Index", new { id = model.UserId });
+            }
+            var user = FIllUserInfo(model.UserId);
+            return View("Index", user);
+
         }
     }
 }

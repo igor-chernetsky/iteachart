@@ -90,7 +90,9 @@
     <Compile Include="EF\Domain\User.cs" />
     <Compile Include="EF\Mappings\UserMap.cs" />
     <Compile Include="EF\MyDbContext.cs" />
+    <Compile Include="Models\AddSkillModel.cs" />
     <Compile Include="Models\AuthenticationResponse.cs" />
+    <Compile Include="Models\IdNameModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Models\UserProfileSkill.cs" />

@@ -29,7 +29,7 @@ namespace Infrastructure.Services
     {
         public void FillDB(){
             //remove all cats
-            foreach(Category c in catRepo.Query()){
+            foreach(Category c in catRepo.Query().ToList()){
                 catRepo.Remove(c);
             }
 

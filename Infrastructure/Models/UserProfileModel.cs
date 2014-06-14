@@ -13,6 +13,7 @@ namespace Infrastructure.Models
         public int Age { get; set; }
         public string Department { get; set; }
         public string Position { get; set; }
-        public List<UserProfileSkill> Skills { get; set; } 
+        public List<UserProfileSkill> Skills { get; set; }
+        public int Id { get; set; }
     }
 }
