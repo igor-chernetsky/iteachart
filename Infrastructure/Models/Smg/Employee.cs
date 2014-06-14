@@ -11,7 +11,8 @@ namespace Infrastructure.Models.Smg
     {
         public IList<Employee> Profiles { get; set; }
     }
-    public class Employee
+
+    public class Employee : EmployeeDetails
     {
         public int ProfileId { get; set; }
         public string FirstName { get; set; }

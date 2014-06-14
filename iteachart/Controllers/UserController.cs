@@ -26,8 +26,15 @@ namespace iteachart.Controllers
        /*     ObjectFactory.GetInstance<IRepository<User>>().Add(new User
                     {
                     });*/
-            var res = smgeService.GetAllEmployees();
-            smgeService.PopulateDataBase();
+            try
+            {
+                var res = smgeService.GetAllEmployees();
+                smgeService.PopulateDataBase(false);
+            }
+            catch (Exception)
+            {
+                
+            }
             return View();
         }
 	}

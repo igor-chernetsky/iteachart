@@ -16,7 +16,6 @@ namespace Infrastructure.Models.Smg
 
         public override string ToString()
         {
-            var b = base.ToString();
             return string.Format("{0}{1}", Method, base.ToString());
         }
     }

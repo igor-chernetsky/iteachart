@@ -33,7 +33,7 @@ namespace iteachart.Controllers
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Content(ex.Message);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Profile");
         }
 	}
 }

@@ -4,19 +4,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Infrastructure.Services;
+using Infrastructure.EF.Domain;
 
 namespace iteachart.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly IUserService userService;
+
+        public HomeController(IUserService userService)
         {
-            
+            this.userService = userService;
         }
 
         public ActionResult Index()
         {
-            return View();
+            List<User> users = userService.GetUsersList().ToList();
+            return View(users);
         }
 
         public ActionResult About()

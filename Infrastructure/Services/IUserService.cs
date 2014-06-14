@@ -12,6 +12,7 @@ namespace Infrastructure.Services
         UserProfileModel GetUserInfo(int userId);
         List<UserProfileSkill> GetUserSkills(int userId);
         void AddSkill(AddSkillModel model);
+        IEnumerable<User> GetUsersList();
     }
 
     public class UserService : IUserService
@@ -61,6 +62,13 @@ namespace Infrastructure.Services
                              })
                              .ToList();
             return userSkills;
+        }
+
+
+        public IEnumerable<User> GetUsersList()
+        {
+            IEnumerable<User> result = userRepo.Query();
+            return result;
         }
 
         public void AddSkill(AddSkillModel model)

@@ -94,6 +94,8 @@
     <Compile Include="Models\AuthenticationResponse.cs" />
     <Compile Include="Models\IdNameModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\Smg\EmployeeDetails.cs" />
+    <Compile Include="Models\Smg\EmployeeDetailsRequest.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Models\UserProfileSkill.cs" />
     <Compile Include="Models\UserProfileSubSkill.cs" />
