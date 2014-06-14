@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Infrastructure.Code;
 using Infrastructure.Services;
 using StructureMap;
 
@@ -23,6 +24,9 @@ namespace iteachart.Controllers
             {
                 filterContext.Result = RedirectToAction("Index", "Home");
             }
+            var user = System.Web.HttpContext.Current.Session[Constants.UserKey];
+            ViewBag.User = user;
+            ViewBag.HasAccess = true;
             base.OnActionExecuting(filterContext);
         }
     }
