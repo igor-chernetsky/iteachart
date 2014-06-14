@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services;
+﻿using Infrastructure.EF.Domain;
+using Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +10,26 @@ namespace iteachart.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ITestService test;
+        private readonly ICategoryService categoryService;
 
-        public CategoryController(ITestService test)
+        public CategoryController(ICategoryService categoryService)
         {
-            this.test = test;
+            this.categoryService = categoryService;
         }
         //
         // GET: /Category/
         public ActionResult Index()
         {
-            test.Test();
-            return View();
+            //categoryService.FillDB();
+            IEnumerable<Category> categories = categoryService.GetCategories();
+            return View(categories);
         }
 
         //
         // GET: /Category/Details/5
         public ActionResult Details(int id)
         {
+
             return View();
         }
 
@@ -34,6 +37,7 @@ namespace iteachart.Controllers
         // GET: /Category/Create
         public ActionResult Create()
         {
+            ViewBag.parentCats = GetParentCategory(true, -1);
             return View();
         }
 
@@ -44,8 +48,18 @@ namespace iteachart.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-
+                Category newCat = new Category(){
+                    Name=collection["Name"]
+                };
+                if (!string.IsNullOrEmpty(collection["parentCat"]))
+                {
+                    int parentId;
+                    if (int.TryParse(collection["parentCat"], out parentId))
+                    {
+                        newCat.ParentId = parentId;
+                    }
+                }
+                categoryService.AddCategory(newCat);
                 return RedirectToAction("Index");
             }
             catch
@@ -58,7 +72,11 @@ namespace iteachart.Controllers
         // GET: /Category/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Category cat = categoryService.GetCategoryById(id);
+
+            ViewBag.parentCats = GetParentCategory(true, cat.ParentId.HasValue ? cat.ParentId.Value : -1);
+
+            return View(cat);
         }
 
         //
@@ -68,8 +86,17 @@ namespace iteachart.Controllers
         {
             try
             {
-                // TODO: Add update logic here
-
+                Category cat = categoryService.GetCategoryById(id);
+                cat.Name = collection["Name"];
+                if (!string.IsNullOrEmpty(collection["parentCat"]))
+                {
+                    int parentId;
+                    if (int.TryParse(collection["parentCat"], out parentId))
+                    {
+                        cat.ParentId = parentId;
+                    }
+                }
+                categoryService.EditCategory(cat);
                 return RedirectToAction("Index");
             }
             catch
@@ -82,7 +109,8 @@ namespace iteachart.Controllers
         // GET: /Category/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            categoryService.DeleteCategory(id);
+            return RedirectToAction("Index");
         }
 
         //
@@ -101,5 +129,29 @@ namespace iteachart.Controllers
                 return View();
             }
         }
+
+        #region "Private Methods"
+
+        private IEnumerable<SelectListItem> GetParentCategory(bool withEmpty, int selectedId)
+        {
+            List<SelectListItem> result = new List<SelectListItem>();
+            if (withEmpty)
+            {
+                result.Add(new SelectListItem()
+                {
+                    Value = null,
+                    Text = "---"
+                });
+            }
+            result.AddRange(categoryService.GetCategoriesByParent(null).Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name,
+                Selected = c.Id == selectedId
+            }));
+            return result;
+        }
+
+        #endregion
     }
 }

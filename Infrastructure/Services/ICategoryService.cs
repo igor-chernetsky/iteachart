@@ -12,7 +12,7 @@ namespace Infrastructure.Services
     {
         IEnumerable<Category> GetCategories();
 
-        IEnumerable<Category> GetCategoriesByParent(int parentId);
+        IEnumerable<Category> GetCategoriesByParent(int? parentId);
 
         Category GetCategoryById(int id);
 
@@ -20,11 +20,27 @@ namespace Infrastructure.Services
 
         void EditCategory(Category cat);
 
+        void DeleteCategory(int id);
+
         void FillDB();
     }
 
-    public class CategoryService : ICategoryService
+    public class CategoryService: ICategoryService
     {
+        public void FillDB(){
+            //remove all cats
+            foreach(Category c in catRepo.Query()){
+                catRepo.Remove(c);
+            }
+
+            catRepo.Add(new Category { Name = ".NET", Id=1 });
+            catRepo.Add(new Category { Name = "JavaScript",Id=2 });
+            catRepo.Add(new Category { Name = "Java", Id = 3 });
+            catRepo.Add(new Category { Name = "ASP.NET", ParentId = 1 });
+            catRepo.Add(new Category { Name = "KnockoutJs", ParentId=2 });
+            catRepo.Add(new Category { Name = "AngularJS", ParentId=2 });
+        }
+
         private IRepository<Category> catRepo;
 
         public CategoryService(IRepository<Category> catRepo)
@@ -38,9 +54,9 @@ namespace Infrastructure.Services
             return result;
         }
 
-        public IEnumerable<Category> GetCategoriesByParent(int parentId)
+        public IEnumerable<Category> GetCategoriesByParent(int? parentId)
         {
-            List<Category> result = catRepo.Query().Where(c => c.ParentId == parentId).ToList();
+            List<Category> result = catRepo.Query().Where(c=>c.ParentId == parentId).ToList();
             return result;
         }
 
@@ -60,68 +76,11 @@ namespace Infrastructure.Services
             catRepo.Update(cat);
         }
 
-        public void FillDB()
+
+        public void DeleteCategory(int id)
         {
-            var categories = new List<Category>();
-            categories.Add(new Category
-            {
-                Name = ".NET",
-                ChildCategories = new List<Category>
-                {
-                    new Category
-                    {
-                        Name = "WinForms",
-                    },
-                    new Category
-                    {
-                        Name = "ASP.NET Web Forms"
-                    },
-                    new Category
-                    {
-                        Name = "ASP.NET MVC"
-                    }
-                }
-            });
-            
-            categories.Add(new Category
-            {
-                Name = "Java",
-                ChildCategories = new List<Category>
-                {
-                    new Category
-                    {
-                        Name = "Java Servlets",
-                    },
-                    new Category
-                    {
-                        Name = "Struts 2 framework"
-                    },
-                    new Category
-                    {
-                        Name = "Spring framework"
-                    }
-                }
-            });
-            
-            categories.Add(new Category
-            {
-                Name = "CSS",
-                ChildCategories = new List<Category>
-                {
-                    new Category
-                    {
-                        Name = "CSS3",
-                    },
-                    new Category
-                    {
-                        Name = "CSS Best practice"
-                    }
-                }
-            });
-            foreach (var category in categories)
-            {
-                catRepo.Add(category);
-            }
+            Category cat = catRepo.Get(id);
+            catRepo.Remove(cat);
         }
     }
 }
