@@ -80,12 +80,15 @@
     <Compile Include="Code\QuestionTypes.cs" />
     <Compile Include="EF\Domain\Attempt.cs" />
     <Compile Include="EF\Domain\Question.cs" />
+    <Compile Include="EF\Domain\GuessedUsers.cs" />
     <Compile Include="EF\Domain\UserSkill.cs" />
     <Compile Include="EF\Domain\Variant.cs" />
     <Compile Include="EF\Mappings\AttemptsMap.cs" />
     <Compile Include="EF\Mappings\CategoryMap.cs" />
     <Compile Include="Code\Constants.cs" />
     <Compile Include="EF\Mappings\QuestionMap.cs" />
+    <Compile Include="EF\Mappings\DepartmentMap.cs" />
+    <Compile Include="EF\Mappings\GuessedUserMap.cs" />
     <Compile Include="EF\Mappings\UserSkillMap.cs" />
     <Compile Include="EF\Mappings\VariantMap.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
@@ -99,8 +102,12 @@
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Models\AddSkillModel.cs" />
     <Compile Include="Models\AuthenticationResponse.cs" />
+    <Compile Include="EF\Domain\Department.cs" />
+    <Compile Include="Models\GuessUserModel.cs" />
     <Compile Include="Models\IdNameModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\Smg\DepartmentRequest.cs" />
+    <Compile Include="Models\Smg\DepartmentResponse.cs" />
     <Compile Include="Models\Smg\EmployeeDetails.cs" />
     <Compile Include="Models\Smg\EmployeeDetailsRequest.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
@@ -117,6 +124,7 @@
     <Compile Include="Services\IAttemptService.cs" />
     <Compile Include="Services\ICategoryService.cs" />
     <Compile Include="Services\IQuestionService.cs" />
+    <Compile Include="Services\IGameService.cs" />
     <Compile Include="Services\ISessionService.cs" />
     <Compile Include="Services\ISmgService.cs" />
     <Compile Include="Services\ITestService.cs" />

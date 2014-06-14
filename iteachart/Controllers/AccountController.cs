@@ -25,8 +25,6 @@ namespace iteachart.Controllers
         {
             try
             {
-                if (session.IsLoggedIn())
-                    session.LogOut();
                 session.Login(model);
                 if (!string.IsNullOrWhiteSpace(returnUrl))
                 {

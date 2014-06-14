@@ -12,15 +12,20 @@ namespace iteachart.Controllers
     public class HomeController : Controller
     {
         private readonly IUserService userService;
-
-        public HomeController(IUserService userService)
+        private ISessionService sessionService;
+        public HomeController(IUserService userService, ISessionService sessionService)
         {
             this.userService = userService;
+            this.sessionService = sessionService;
         }
 
         public ActionResult Index()
         {
-            var users = userService.GetUsersList().Select(s => new UserModel
+            ViewBag.Deps = userService.GetDepartments();
+
+            var users = userService.GetUsersList()
+                .ToList()
+                .Select(s => new UserModel
             {
                 ProfileId = s.ProfileId,
                 FirstName = s.FirstName,
@@ -32,7 +37,8 @@ namespace iteachart.Controllers
                 IsEnabled = s.IsEnabled,
                 Position = s.Position,
                 Room = s.Room,
-                DeptId = s.DeptId
+                DeptId = s.DeptId,
+                DeptName = s.Department.Name
             }).ToList();
             return View(users);
         }

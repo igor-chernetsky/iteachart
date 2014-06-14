@@ -12,7 +12,10 @@ namespace Infrastructure.EF.Domain
     {
         public int Id { get; set; }
         public virtual ICollection<UserSkill> AddedSkills { get; set; }
+        public virtual ICollection<GuessedUser> GuessedUsers { get; set; }
+        public virtual ICollection<GuessedUser> PlayedUsers { get; set; }
 
         public virtual ICollection<Attempt> Attempts { get; set; }
+        public virtual Department Department { get; set; }
     }
 }

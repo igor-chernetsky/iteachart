@@ -9,5 +9,6 @@ namespace Infrastructure.Code
     public static class Constants
     {
         public static string UserKey = "ITechUserSession";
+        public static int RandomUserNum = 4;
     }
 }

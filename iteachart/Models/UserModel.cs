@@ -17,8 +17,11 @@ namespace iteachart.Models
         public string Position { get; set; }
         public string Room { get; set; }
         public int DeptId { get; set; }
+        public string DeptName { get; set; }
         public string Image { get; set; }
         public bool IsEnabled { get; set; }
         public string FullName { get { return FirstNameEng + " " + LastNameEng; } }
+
+        public string ProfileLink { get { return "/Profile/Index/" + Id; } }
     }
 }

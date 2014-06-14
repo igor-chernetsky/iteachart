@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Infrastructure.EF.Domain;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
@@ -14,17 +15,21 @@ namespace Infrastructure.Services
         void AddSkill(AddSkillModel model);
         IEnumerable<User> GetUsersList();
         void RemoveSkill(int categoryId, int id);
+
+        IList<IdNameModel> GetDepartments();
     }
 
     public class UserService : IUserService
     {
         private IRepository<User> userRepo;
+        private IRepository<Department> depRepo;
         private IRepository<UserSkill> userSkillRepo;
 
-        public UserService(IRepository<User> userRepo, IRepository<UserSkill> userSkillRepo)
+        public UserService(IRepository<User> userRepo, IRepository<UserSkill> userSkillRepo, IRepository<Department> depRepo)
         {
             this.userRepo = userRepo;
             this.userSkillRepo = userSkillRepo;
+            this.depRepo = depRepo;
         }
 
         public UserProfileModel GetUserInfo(int id)
@@ -40,7 +45,7 @@ namespace Infrastructure.Services
                 Id = id,
                 UserName = user.FirstNameEng,
                 UserLastName = user.LastNameEng,
-                Age = (DateTime.Now - user.Birthday).Days/365,
+                Age = (DateTime.Now - user.Birthday).Days / 365,
                 ImageUrl = user.Image,
                 Position = user.Position
             };
@@ -81,6 +86,17 @@ namespace Infrastructure.Services
             {
                 userSkillRepo.Remove(modelToREmove);
             }
+        }
+
+        public IList<IdNameModel> GetDepartments()
+        {
+            return depRepo.Query().Select(s => new IdNameModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            })
+            .Distinct()
+            .ToList();
         }
 
         public void AddSkill(AddSkillModel model)

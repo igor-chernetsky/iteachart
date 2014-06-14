@@ -42,7 +42,7 @@ namespace Infrastructure.Services
 
         public void Login(LoginModel model)
         {
-            var dbUser = new User();
+            User dbUser = null;
             var token = "blaBla";
             try
             {
@@ -61,7 +61,8 @@ namespace Infrastructure.Services
             var session = new SessionUser
             {
                 AuthorizationToken = token,
-                UserName = model.UserName
+                UserName = model.UserName,
+                DomenName = model.UserName
             };
 
             if (dbUser == null)
@@ -87,6 +88,7 @@ namespace Infrastructure.Services
             }
             else
             {
+                session.DomenName = "vasya.pupkin";
                 session.FirstName = "Вася";
                 session.LastName = "Пупкин";
 
@@ -100,7 +102,7 @@ namespace Infrastructure.Services
         public void LogOut()
         {
             FormsAuthentication.SignOut();
-            HttpContext.Current.Session[Constants.UserKey] = null;
+            HttpContext.Current.Session.Abandon();
         }
 
         public bool IsLoggedIn()
