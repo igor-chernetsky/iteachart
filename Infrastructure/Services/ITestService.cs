@@ -10,7 +10,7 @@ namespace Infrastructure.Services
 
     public class TestService : ITestService
     {
-        private IRepository<User> userRepo; 
+        private IRepository<User> userRepo;
         public TestService(IRepository<User> userRepo)
         {
             this.userRepo = userRepo;
@@ -23,5 +23,7 @@ namespace Infrastructure.Services
                 Login = "test!"
             });
         }
+
+
     }
 }
