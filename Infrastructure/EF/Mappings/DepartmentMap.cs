@@ -18,6 +18,10 @@ namespace Infrastructure.EF.Mappings
             Property(x => x.Name).IsRequired();
             Property(x => x.NumUsers).IsRequired();
 
+            HasMany(x => x.Users)
+                .WithRequired(x => x.Department)
+                .HasForeignKey(x => x.DeptId);
+
             HasKey(x => x.Id);
         }
     }
