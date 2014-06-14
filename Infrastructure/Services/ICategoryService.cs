@@ -22,12 +22,12 @@ namespace Infrastructure.Services
 
         void DeleteCategory(int id);
 
-        void AutoFill();
+        void FillDB();
     }
 
     public class CategoryService: ICategoryService
     {
-        public void AutoFill(){
+        public void FillDB(){
             //remove all cats
             foreach(Category c in catRepo.Query()){
                 catRepo.Remove(c);
