@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Security;
 using Infrastructure.Code;
 using Infrastructure.EF.Domain;
 using Infrastructure.Exceptions;
@@ -91,13 +92,14 @@ namespace Infrastructure.Services
 
             }
 
-
+            FormsAuthentication.SetAuthCookie(session.DomenName, false);
             HttpContext.Current.Session[Constants.UserKey] = session;
         }
 
 
         public void LogOut()
         {
+            FormsAuthentication.SignOut();
             HttpContext.Current.Session[Constants.UserKey] = null;
         }
 

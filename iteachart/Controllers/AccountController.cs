@@ -24,7 +24,7 @@ namespace iteachart.Controllers
         {
             try
             {
-                if(session.IsLoggedIn())
+                if (session.IsLoggedIn())
                     session.LogOut();
                 session.Login(model);
             }
@@ -35,5 +35,19 @@ namespace iteachart.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-	}
+
+        public ActionResult Logoff()
+        {
+            try
+            {
+                session.LogOut();
+            }
+            catch (AuthorizationException ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Content(ex.Message);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+    }
 }
