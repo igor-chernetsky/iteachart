@@ -70,7 +70,9 @@ input[type="checkbox"].input-validation-error {
 
 #testContainer .error {
     background-color: #ff0000;
+    color: #fff;
 }
 #testContainer .correct {
     background-color: #3276b1;
+    color: #fff;
 }

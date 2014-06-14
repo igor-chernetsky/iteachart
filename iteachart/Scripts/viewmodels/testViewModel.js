@@ -9,6 +9,7 @@
         self.score = ko.observable(0);
         self.status = ko.observable(null);
         self.inProcess = ko.observable(false);
+        self.finished = ko.observable(false);
         self.results = ko.observable(null);
         
         self.wrongAnswers = ko.observableArray([]);
@@ -33,6 +34,7 @@
                 dataType: 'html',
                 data: data,
                 success: function (response) {
+                    response = $.parseJSON(response);
                     console.log(response);
                     if (response.status) {
                         self.status('correct');
@@ -57,10 +59,10 @@
             });
         }
 
-        self.selfGetResultString = function (results) {
+        self.GetResultString = function (results) {
             var percent = 0;
             if(self.startCount){
-                percent = (100/self.startCount)*results;
+                percent = (100/self.startCount)*results();
             }
             var resstring = 'You answered on ' + percent + '% you ' + percent >= 80 ? 'pass' : 'failed';
             return resstring;
@@ -76,7 +78,9 @@
                 dataType: 'html',
                 data: data,
                 success: function (response) {
+                    response = $.parseJSON(response);
                     self.results(response.score);
+                    self.finished(true);
                 }
             });
         }

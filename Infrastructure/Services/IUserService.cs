@@ -17,6 +17,8 @@ namespace Infrastructure.Services
         void RemoveSkill(int categoryId, int id);
 
         IList<IdNameModel> GetDepartments();
+
+        void ApproveUserSkill(int skillid, int userId);
     }
 
     public class UserService : IUserService
@@ -106,6 +108,17 @@ namespace Infrastructure.Services
                 CategoryId = model.CategoryId,
                 UserId = model.UserId
             });
+        }
+
+
+        public void ApproveUserSkill(int skillid, int userId)
+        {
+            UserSkill skill = userSkillRepo.Query().FirstOrDefault(s => s.CategoryId == skillid && s.UserId == userId);
+            if (skill != null)
+            {
+                skill.IsApproved = true;
+                userSkillRepo.Update(skill);
+            }
         }
     }
 }

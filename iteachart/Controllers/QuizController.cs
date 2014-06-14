@@ -13,11 +13,13 @@ namespace iteachart.Controllers
     {
         private readonly IQuestionService questionService;
         private readonly IAttemptService attemptService;
+        private readonly IUserService userService;
 
-        public QuizController(IQuestionService questionService, IAttemptService attemptService)
+        public QuizController(IQuestionService questionService, IAttemptService attemptService, IUserService userService)
         {
             this.questionService = questionService;
             this.attemptService = attemptService;
+            this.userService = userService;
         }
         //
         // GET: /Quiz/
@@ -48,6 +50,10 @@ namespace iteachart.Controllers
         public JsonResult GetResults(int attemptId)
         {
             Attempt attempt = attemptService.GetAttemptById(attemptId);
+            if (attempt.Score >= 8)
+            {
+                userService.ApproveUserSkill(attempt.CategoryId, attempt.UserId);
+            }
             return Json(new { score = attempt.Score }, JsonRequestBehavior.AllowGet);
         }
 	}
