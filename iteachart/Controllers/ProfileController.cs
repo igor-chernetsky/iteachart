@@ -39,6 +39,8 @@ namespace iteachart.Controllers
             userInfo.Skills = userService.GetUserSkills(id);
             userInfo.CanEdit = CurrentUser!=null && id == CurrentUser.Id;
             var skillIds = userInfo.Skills.SelectMany(x => x.SubSkills.Select(s => s.SkillId));
+            var knownUsers = userService.GetKnownUsers(id);
+            userInfo.KnownUsers = knownUsers;
             ViewBag.Categories = categoryService.GetCategoriesByParent(null).Select(x => new IdNameParentModel
             {
                 Id = x.Id,

@@ -1,0 +1,135 @@
+﻿@using ServiceStack
+@model Infrastructure.Models.GuessUserModel
+
+    <script>
+        $(function () {
+            var data =@Html.Raw(Model.ToJson())
+            var vm = new GuessModel(data)
+            var elem = $('#guessUserContainer').get(0)
+            ko.applyBindings(vm, elem)
+        })
+        function GuessModel(data) {
+            var self = this;
+            self.limit = 30;
+            self.timeLimit = ko.observable(self.limit);
+            self.GuessModel = ko.observable();
+            self.Answers = ko.observableArray();
+            self.selectedItem = ko.observable();
+            self.selectedItem.subscribe(function(value) {
+                if (value) {
+                    if (self.interval)
+                        clearInterval(self.interval);
+                    if (self.timeout) {
+                        clearTimeout(self.timeout);
+                    }
+                    $.post('@Url.Action("WriteStatistic", "Game")',{guessPerson:self.GuessModel().Id, isGuessed:self.GuessModel().Id == +self.selectedItem()})
+                }
+            })
+            self.itemIsSelected = ko.computed(function() {
+                return self.selectedItem() > 0;
+            })
+            self.tryAgain = function() {
+                $.getJSON('@Url.Action("Random", "Game")',function(data) {
+                    self.refresh(data);
+                })
+            }
+            self.isGuessed = ko.computed(function() {
+                if (self.selectedItem()) {
+                    return self.GuessModel().Id == +self.selectedItem();
+                }
+            })
+            self.isNotGuessed = ko.computed(function() {
+                if (self.selectedItem()) {
+                    return self.GuessModel().Id != +self.selectedItem();
+                }
+            })
+            self.guessed = function(isGuessed) {
+                self.isGuessed(isGuessed);
+            }
+            self.refresh = function(data) {
+                self.GuessModel(data.UserToGuess);
+                self.Answers(data.Choices)
+                self.selectedItem(null);
+                self.timeLimit(self.limit)
+                if (self.interval)
+                    clearInterval(self.interval);
+                if (self.timeout) {
+                    clearTimeout(self.timeout);
+                }
+                self.timeout = setTimeout(function() {
+                    self.tryAgain();
+                }, self.timeLimit()*1000);
+                self.interval = setInterval(function() {
+                    var time = self.timeLimit() - 1;
+                    time = time < 0 ? 0 : time;
+                    self.timeLimit(time);
+                },1000)
+            }
+
+            if (data) {
+                self.refresh(data);
+            }
+        }
+    </script>
+<div id="guessUserContainer" class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <!-- ko with:GuessModel  -->
+                    <div class="panel panel-primary">
+                        <div class="panel-body" style="position:relative;">
+                            <div style="position: absolute; top:5px;left:5px;">
+                                <span class="badge" data-bind="text:$parent.timeLimit"></span>
+                            </div>
+                            <h4 class="text-center">Do you know this person?</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="text-center">
+                                        <a href="#">
+                                            <img data-bind="attr:{src:ImageUrl}">
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div data-bind="visible:$parent.itemIsSelected">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <h4 data-bind="text:UserFullName"></h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <div class="text-muted">Age: <span data-bind="text:Age"></span>, <span data-bind="text:Position"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <div data-bind="visible:itemIsSelected">
+                        <div class="row">
+                            <div class="col-md-12" data-bind="slideVisible:isGuessed">
+                                <div class="alert alert-success text-center">You win! <a href="#" class="alert-link" data-bind="click:tryAgain">Try again</a></div>
+                            </div>
+                            <div class="col-md-12" data-bind="slideVisible:isNotGuessed">
+                                <div class="alert alert-danger text-center">You loose!  <a href="#" class="alert-link" data-bind="click:tryAgain">Try again</a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ko foreach: Answers -->
+                    <div class="row">
+                        <div class="col-md-1">
+                            <input type="radio" name="choiceItem" data-bind="value:Id,attr:{id:Id},checked:$parent.selectedItem, disable:$parent.itemIsSelected()" />
+                        </div>
+                        <div class="col-md-10">
+                            <label data-bind="attr:{for:Id}"><span data-bind="text:UserFullName"></span></label>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

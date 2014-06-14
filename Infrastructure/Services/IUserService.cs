@@ -19,6 +19,7 @@ namespace Infrastructure.Services
         IList<IdNameModel> GetDepartments();
 
         void ApproveUserSkill(int skillid, int userId);
+        IEnumerable<UserProfileModel> GetKnownUsers(int id);
     }
 
     public class UserService : IUserService
@@ -47,6 +48,7 @@ namespace Infrastructure.Services
                 Id = id,
                 UserName = user.FirstNameEng,
                 UserLastName = user.LastNameEng,
+                Department = user.Department.Name,
                 Age = (DateTime.Now - user.Birthday).Days / 365,
                 ImageUrl = user.Image,
                 Position = user.Position
@@ -99,6 +101,19 @@ namespace Infrastructure.Services
             })
             .Distinct()
             .ToList();
+        }
+
+        public IEnumerable<UserProfileModel> GetKnownUsers(int id)
+        {
+            var query = userRepo.Get(id);
+            var guessed = query.GuessedUsers;
+            if (guessed != null)
+            {
+                foreach (var guessedUser in guessed)
+                {
+                    yield return GetUserInfo(guessedUser.Guessed.Id);
+                }
+            }
         }
 
         public void AddSkill(AddSkillModel model)

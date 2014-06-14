@@ -7,6 +7,7 @@ namespace Infrastructure.Models
         public UserProfileModel()
         {
             Skills = new List<UserProfileSkill>();
+            KnownUsers = new List<UserProfileModel>();
         }
         public string UserName { get; set; }
         public string UserLastName { get; set; }
@@ -23,5 +24,6 @@ namespace Infrastructure.Models
         public List<UserProfileSkill> Skills { get; set; }
         public int Id { get; set; }
         public bool CanEdit { get; set; }
+        public IEnumerable<UserProfileModel> KnownUsers { get; set; }
     }
 }

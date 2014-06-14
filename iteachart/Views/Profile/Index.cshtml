@@ -3,7 +3,7 @@
 @model Infrastructure.Models.UserProfileModel
 
 @{
-    ViewBag.Title = "Мой профиль";
+    ViewBag.Title = "My Profile";
 }
 
 @section scripts
@@ -15,9 +15,12 @@
     </script>
 }
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" style="margin-top:20px;">
     <li class="active"><a href="#profile" data-toggle="tab">IT Profile</a></li>
-    <li><a href="#social" data-toggle="tab">Social</a></li>
+    @if (Model.CanEdit)
+    {
+        <li><a href="#social" data-toggle="tab">Whom I know</a></li>
+    }
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="profile" style="margin-top:-1px;">
@@ -79,7 +82,7 @@
                                                         <div class="col-md-1">
                                                             <form action="@Url.Action("RemoveSkill")">
                                                                 @Html.Hidden("CategoryId", subSkill.SkillId)
-                                                                <div class="col-md-1"><input type="submit" class="btn btn-xs btn-danger" value="Remove"/></div>
+                                                                <div class="col-md-1"><input type="submit" class="btn btn-xs btn-danger" value="Remove" /></div>
                                                             </form>
                                                         </div>
                                                     }
@@ -105,10 +108,34 @@
             </div>
         </div>
     </div>
-    <div class="tab-pane" id="social" style="margin-top:-1px;">
+    @if (Model.CanEdit)
+    {
+        <div class="tab-pane" id="social" style="margin-top: -1px;">
+            <div class="container">
+                @if (Model.KnownUsers.Any())
+                {
+                    <h3>You already know these users</h3>
+                    <hr />
+                    foreach (var user in Model.KnownUsers)
+                    {
+                        <div class="thumbnail pull-left" style="width: 350px; margin-left: 20px; margin-bottom: 20px;">
+                            <img class="profile-poster" src="@user.ImageUrl" alt=" ...">
+                            <div class="caption">
+                                <h3><a href="@Url.Action("Index", "Profile", new {id = user.Id})">@user.UserFullName</a></h3>
+                                <p>Department: <span>@user.Department</span></p>
+                                <p>Position: <span>@user.Position</span></p>
+                            </div>
+                        </div>
+                    }
 
-        Здесь будет инфа, насколько хорошо ты знаешь сотрудников
-    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">Unfortunately, you haven't guessed any employee in our company :(.<a class="alert-link" href="@Url.Action("Index", "Game")"> Do you want to try</a>?</div>
+                }
+            </div>
+        </div>
+    }
 </div>
 @if (Model.CanEdit)
 {

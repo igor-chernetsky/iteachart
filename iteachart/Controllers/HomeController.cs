@@ -21,6 +21,7 @@ namespace iteachart.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.FirstLogin = TempData["FirstLogin"] != null;
             ViewBag.Deps = userService.GetDepartments();
 
             var users = userService.GetUsersList()
