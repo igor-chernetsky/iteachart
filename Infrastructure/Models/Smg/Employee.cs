@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,5 +25,8 @@ namespace Infrastructure.Models.Smg
         public int DeptId { get; set; }
         public string Image { get; set; }
         public bool IsEnabled { get; set; }
+
+        [NotMapped]
+        public string FullName { get { return FirstNameEng + " " + LastNameEng; } }
     }
 }

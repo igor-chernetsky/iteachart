@@ -1,54 +1,98 @@
-﻿@model IEnumerable<Infrastructure.EF.Domain.User>
+﻿@using ServiceStack
+@model IEnumerable<Infrastructure.EF.Domain.User>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Profiles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@section scripts
+{
+    
+<script type="text/javascript">
+    $(function() {
+        @{
+            var jsModel = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+        }
+        function ProfilesViewModel() {
+            var self = this
+            
+            this.searchExpr = ko.observable('')
+            var model = @Html.Raw(jsModel)
+            this.items = ko.observableArray(model)
 
-<table class="table">
-    <tr>
-        <th class="hidden">
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Image)
-        </th>
-        <th>
-            Full Name
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Position)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Room)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeptId)
-        </th>
-    </tr>
+            this.filteredItems =  ko.computed(function() {
+                    var filter = self.searchExpr().toLowerCase();
+                    if (!filter) {
+                        return self.items();
+                    } else {
+                        return ko.utils.arrayFilter(self.items(), function (item) {
+                            return item.FullName.toLowerCase().indexOf(filter) > -1;
+                        });
+                    }
+            })
+        }
+        var vm = new ProfilesViewModel()
+        var elem = $('#profiles').get(0)
+        ko.applyBindings(vm, elem)
 
-@foreach (var item in Model) {
-    <tr>
-        <td class="hidden">
-            @Html.DisplayFor(modelItem => item.ProfileId)
-        </td>
-        <td>
-            <img src="@item.Image" alt="Image" />
-        </td>
-        <td>
-            <a href="@Url.Action("Index", "Profile", new { id = item.Id })">@item.FirstNameEng @item.LastNameEng</a>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Position)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Room)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeptId)
-        </td>
-    </tr>
+    })
+</script>
 }
 
-</table>
+<div id="profiles">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+@*            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>*@
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               @* <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>*@
+                <div class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" data-bind="value: searchExpr" placeholder="Type to search...">
+                    </div>
+                </div>
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div data-bind="foreach: filteredItems" class="row">
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img data-bind="attr: {src: Image}" alt=" ...">
+                <div class="caption">
+                    <h3 data-bind="text: FullName"></h3>
+                    <p>Department: <span data-bind="text: DeptId"></span></p>
+                    <p>Position: <span data-bind="text: Position"></span></p>
+                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
