@@ -43,7 +43,7 @@ namespace iteachart.Controllers
             return Json(gameModel, JsonRequestBehavior.AllowGet);
         }
 
-        public void WriteStatistic(int guessPerson, bool isGuessed )
+        public void WriteStatistic(int guessPerson, bool isGuessed)
         {
             gameService.WriteStatistics(CurrentUser.Id, guessPerson, isGuessed);
         }

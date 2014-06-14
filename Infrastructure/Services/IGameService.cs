@@ -21,10 +21,11 @@ namespace Infrastructure.Services
         private IRepository<User> userRepo;
         private IRepository<GuessedUser> guessUserRepo;
         private IUserService userService;
-        public GameService(IRepository<User> userRepo, IUserService userService)
+        public GameService(IRepository<User> userRepo, IUserService userService, IRepository<GuessedUser> guessUserRepo)
         {
             this.userRepo = userRepo;
             this.userService = userService;
+            this.guessUserRepo = guessUserRepo;
         }
 
         public UserProfileModel GetRandomUser(int id)
