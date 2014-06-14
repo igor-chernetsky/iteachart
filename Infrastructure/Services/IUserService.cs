@@ -40,7 +40,7 @@ namespace Infrastructure.Services
                 Id = id,
                 UserName = user.FirstNameEng,
                 UserLastName = user.LastNameEng,
-                Age = 26,
+                Age = (DateTime.Now - user.Birthday).Days/365,
                 ImageUrl = user.Image,
                 Position = user.Position
             };

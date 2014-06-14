@@ -8,6 +8,7 @@ using Infrastructure.Services;
 
 namespace iteachart.Controllers
 {
+    [Authorize]
     public class ProfileController : BaseSecureController
     {
         private IUserService userService;
@@ -25,6 +26,7 @@ namespace iteachart.Controllers
             return View("Index", userInfo);
         }
 
+        [AllowAnonymous]
         public ActionResult Index(int id)
         {
             var userInfo = FIllUserInfo(id);
@@ -35,7 +37,7 @@ namespace iteachart.Controllers
         {
             var userInfo = userService.GetUserInfo(id);
             userInfo.Skills = userService.GetUserSkills(id);
-            userInfo.CanEdit = id == CurrentUser.Id;
+            userInfo.CanEdit = CurrentUser!=null && id == CurrentUser.Id;
             var skillIds = userInfo.Skills.SelectMany(x => x.SubSkills.Select(s => s.SkillId));
             ViewBag.Categories = categoryService.GetCategoriesByParent(null).Select(x => new IdNameParentModel
             {
