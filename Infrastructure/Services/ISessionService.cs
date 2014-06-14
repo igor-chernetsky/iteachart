@@ -81,6 +81,8 @@ namespace Infrastructure.Services
                 session.Room = dbUser.Room;
                 session.DepId = dbUser.DeptId;
                 session.ImageUrl = dbUser.Image;
+                session.Id = dbUser.Id;
+                dbUser.ProfileId = dbUser.ProfileId;
             }
             else
             {
