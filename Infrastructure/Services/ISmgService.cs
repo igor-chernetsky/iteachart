@@ -20,6 +20,8 @@ namespace Infrastructure.Services
     {
         EmployeeResponse GetAllEmployees();
 
+        EmployeeDetailsResponse GetEmployeeDetails(int profileId);
+
         void PopulateDataBase();
     }
 
@@ -55,6 +57,11 @@ namespace Infrastructure.Services
             return Request<EmployeeResponse, AllEmployeesRequest>(new AllEmployeesRequest(User.AuthorizationToken));
         }
 
+        public EmployeeDetailsResponse GetEmployeeDetails(int profileId)
+        {
+            return Request<EmployeeDetailsResponse, EmployeeDetailsRequest>(new EmployeeDetailsRequest(User.AuthorizationToken));
+        }
+
         public void PopulateDataBase()
         {
             var employees = GetAllEmployees().Profiles;
@@ -63,19 +70,33 @@ namespace Infrastructure.Services
                 var old = userRepo.Query().FirstOrDefault(t => t.ProfileId == e.ProfileId);
                 if (old == null)
                 {
-                    userRepo.Add(new User
+                    var user = new User
                     {
-                        DeptId       = e.DeptId,
-                        FirstName    = e.FirstName,
+                        DeptId = e.DeptId,
+                        FirstName = e.FirstName,
                         FirstNameEng = e.FirstNameEng,
-                        IsEnabled    = e.IsEnabled,
-                        LastName     = e.LastName,
-                        LastNameEng  = e.LastNameEng,
+                        IsEnabled = e.IsEnabled,
+                        LastName = e.LastName,
+                        LastNameEng = e.LastNameEng,
                         Image = e.Image,
-                        Position     = e.Position,
-                        ProfileId    = e.ProfileId,
-                        Room         = e.Room
-                    });
+                        Position = e.Position,
+                        ProfileId = e.ProfileId,
+                        Room = e.Room
+                    };
+
+                    var d = GetEmployeeDetails(user.ProfileId).Details;
+                    user.MiddleName = d.MiddleName;
+                    user.Birthday = d.Birthday;
+                    user.Skype = d.Skype;
+                    user.Phone = d.Phone;
+                    user.DomenName = d.DomenName;
+                    user.Rank = d.Rank;
+                    user.Room = d.Room;
+                    user.Email = d.Email;
+                    
+                    userRepo.Add(user);
+
+                    
                 }
                 else
                 {
@@ -89,6 +110,15 @@ namespace Infrastructure.Services
                     old.Position     = e.Position;
                     old.ProfileId    = e.ProfileId;
                     old.Room         = e.Room;
+                    var d = GetEmployeeDetails(old.ProfileId).Details;
+                    old.MiddleName = d.MiddleName;
+                    old.Birthday = d.Birthday;
+                    old.Skype = d.Skype;
+                    old.Phone = d.Phone;
+                    old.DomenName = d.DomenName;
+                    old.Rank = d.Rank;
+                    old.Room = d.Room;
+                    old.Email = d.Email;
                     userRepo.Update(old);
                 }
             }

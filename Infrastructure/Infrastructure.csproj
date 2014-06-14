@@ -92,6 +92,8 @@
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Models\AuthenticationResponse.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\Smg\EmployeeDetails.cs" />
+    <Compile Include="Models\Smg\EmployeeDetailsRequest.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Models\UserProfileSkill.cs" />
     <Compile Include="Models\UserProfileSubSkill.cs" />
@@ -107,7 +109,6 @@
     <Compile Include="Services\ISessionService.cs" />
     <Compile Include="Services\ISmgService.cs" />
     <Compile Include="Services\ITestService.cs" />
-    <Compile Include="Services\IUserService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

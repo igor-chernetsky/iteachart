@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Models.Smg
 {
-    public class AllEmployeesRequest : BaseRequest
+    public class EmployeeDetailsRequest : BaseRequest
     {
-        public override string Method { get { return "GetAllEmployees"; } }
+        public override string Method { get { return "GetEmployeeDetails"; } }
 
-        public AllEmployeesRequest(string sessionId) : base(sessionId)
+        public EmployeeDetailsRequest(string sessionId) : base(sessionId)
         {
         }
 
