@@ -31,17 +31,18 @@
         </div>
     </div>
     
-    <div data-bind="visible: results">
-        <div data-bind="visible: wrongAnswers.length">
-            <div data-bind="text: getResultString(results)"></div>
+    <div data-bind="visible: finished">
+        <h2>You have got <b data-bind="text: results"></b> points.</h2>
+        <div data-bind="visible: wrongAnswers().length > 0">
+            <h4>Check your wrong answers:</h4>
             <div data-bind="foreach: wrongAnswers">
                 <div class="panel">
                     <div class="well well-sm" data-bind="text: text"></div>
-                    <div class="well well-sm correct"></div>
+                    <div class="well well-sm correct" data-bind="text: answer"></div>
                 </div>
             </div>
         </div>
-        <h3 data-bind="visible: !wrongAnswers.length">Perfect, you don't have errors!</h3>
+        <h3 data-bind="visible: !wrongAnswers().length">Perfect, you don't have errors!</h3>
     </div>
 </div>
 
