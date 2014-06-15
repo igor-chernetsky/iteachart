@@ -153,9 +153,16 @@ namespace Infrastructure.Services
             {
                 skill.IsApproved = true;
                 userSkillRepo.Update(skill);
-                achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed5tests);
-                achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed10tests);
-                achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed15tests);
+                try
+                {
+                    achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed5tests);
+                    achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed10tests);
+                    achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed15tests);
+                }
+                catch (Exception e)
+                {
+                    
+                }
             }
         }
     }
