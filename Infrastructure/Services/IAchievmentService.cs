@@ -16,6 +16,7 @@ namespace Infrastructure.Services
         private IRepository<AchievmentAssigned> achievmentAssignmentRepo;
         private readonly IRepository<Achievment> achievmentRepo;
         private IRepository<User> userRepo;
+        private IRepository<UserSkill> userSkillRepo;
 
         public AchievmentService(IRepository<AchievmentAssigned> achievmentAssignmentRepo, IRepository<User> userRepo, IRepository<Achievment> achievmentRepo)
         {
@@ -92,6 +93,41 @@ namespace Infrastructure.Services
                         });
                     }
                     break;
+                case BadgeType.Completed5tests:
+                case BadgeType.Completed10tests:
+                case BadgeType.Completed15tests:
+                    var skillesApproved = userSkillRepo.Query().Count(x => x.IsApproved);
+                    if (skillesApproved <= 5)
+                    {
+                        achievmentAssignmentRepo.Remove(x => x.UserId == userId && 
+                            (x.Achievment.BadgeType == BadgeType.Completed10tests ||x.Achievment.BadgeType == BadgeType.Completed15tests ));
+                        achievmentAssignmentRepo.Add(new AchievmentAssigned
+                        {
+                            UserId = userId,
+                            AchievmentId = achievmentRepo.Query().FirstOrDefault(x => x.BadgeType == BadgeType.Completed5tests).Id
+                        });
+                    }
+                    else if (skillesApproved <= 10)
+                    {
+                        achievmentAssignmentRepo.Remove(x => x.UserId == userId &&
+                            (x.Achievment.BadgeType == BadgeType.Completed15tests || x.Achievment.BadgeType == BadgeType.Completed5tests));
+                        achievmentAssignmentRepo.Add(new AchievmentAssigned
+                        {
+                            UserId = userId,
+                            AchievmentId = achievmentRepo.Query().FirstOrDefault(x => x.BadgeType == BadgeType.Completed10tests).Id
+                        });
+                    }else if (skillesApproved <= 15)
+                    {
+                        achievmentAssignmentRepo.Remove(x => x.UserId == userId &&
+                            (x.Achievment.BadgeType == BadgeType.Completed10tests || x.Achievment.BadgeType == BadgeType.Completed5tests));
+                        achievmentAssignmentRepo.Add(new AchievmentAssigned
+                        {
+                            UserId = userId,
+                            AchievmentId = achievmentRepo.Query().FirstOrDefault(x => x.BadgeType == BadgeType.Completed15tests).Id
+                        });
+                    }
+                    break;
+
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Infrastructure.Code;
 using Infrastructure.EF.Domain;
 using Infrastructure.Models;
 using Infrastructure.Repositories;
@@ -27,6 +28,7 @@ namespace Infrastructure.Services
         private IRepository<User> userRepo;
         private IRepository<Department> depRepo;
         private IRepository<UserSkill> userSkillRepo;
+        private IAchievmentService achievmentService;
 
         public UserService(IRepository<User> userRepo, IRepository<UserSkill> userSkillRepo, IRepository<Department> depRepo)
         {
@@ -51,7 +53,7 @@ namespace Infrastructure.Services
                 Department = user.Department.Name,
                 Age = (DateTime.Now - user.Birthday).Days / 365,
                 ImageUrl = user.Image,
-                Achievments = user.AchievmentsAssigned.Select(x=> new AchievmentModel
+                Achievments = user.AchievmentsAssigned.Select(x => new AchievmentModel
                 {
                     BadgeType = x.Achievment.BadgeType,
                     Description = x.Achievment.Description,
@@ -139,6 +141,9 @@ namespace Infrastructure.Services
             {
                 skill.IsApproved = true;
                 userSkillRepo.Update(skill);
+                achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed5tests);
+                achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed10tests);
+                achievmentService.AssignBadgeIfPossible(userId, BadgeType.Completed15tests);
             }
         }
     }
