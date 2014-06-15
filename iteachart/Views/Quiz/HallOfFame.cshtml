@@ -5,34 +5,40 @@
 }
 
 <h2>Hall Of Fame</h2>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th></th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Department</th>
-            <th>Score</th>
-            <th>Achievements</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var a in (Dictionary<Infrastructure.Models.UserProfileModel, double>)ViewBag.top)
-        {
-            <tr class="@(ViewBag.currentId == a.Key.Id ? "success":"")">
-                <td><a href="/profile/index/@a.Key.Id"><img src="@a.Key.ImageUrl" height="100" width="100" /></a></td>
-                <td>@a.Key.UserName</td>
-                <td>@a.Key.UserLastName</td>
-                <td>@a.Key.Department</td>
-                <td>@Math.Round(a.Value, 2)</td>
-                <td>
-                    @foreach (var achivement in a.Key.Achievments)
-                    {
-                        <img src="@Url.Content(achivement.ImageUrl)" alt="@a.Key.UserName @a.Key.UserLastName">
-                    }
-                </td>
+@if (((Dictionary<Infrastructure.Models.UserProfileModel, double>)ViewBag.top).Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Department</th>
+                <th>Score</th>
+                <th>Achievements</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var a in (Dictionary<Infrastructure.Models.UserProfileModel, double>) ViewBag.top)
+            {
+                <tr class="@(ViewBag.currentId == a.Key.Id ? "success" : "")">
+                    <td><a href="/profile/index/@a.Key.Id"><img src="@a.Key.ImageUrl" /></a></td>
+                    <td>@a.Key.UserName</td>
+                    <td>@a.Key.UserLastName</td>
+                    <td>@a.Key.Department</td>
+                    <td>@Math.Round(a.Value, 2)</td>
+                    <td>
+                        @foreach (var achivement in a.Key.Achievments)
+                        {
+                            <img src="@Url.Content(achivement.ImageUrl)" alt="@a.Key.UserName @a.Key.UserLastName">
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">Hall is empty.</div>
+}

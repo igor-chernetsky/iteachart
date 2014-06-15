@@ -22,8 +22,14 @@ namespace iteachart.Controllers
         // GET: /Category/
         public ActionResult Index()
         {
-            categoryService.FillDB();
+            //categoryService.FillDB();
             IEnumerable<Category> categories = categoryService.GetCategories();
+            if (categories.Count() == 0)
+            {
+                categoryService.FillDB();
+                categories = categoryService.GetCategories();
+            }
+
             return View(categories);
         }
 

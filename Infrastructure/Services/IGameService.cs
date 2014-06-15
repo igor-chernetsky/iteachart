@@ -70,8 +70,15 @@ namespace Infrastructure.Services
                     GuessedId = guessPerson
                 };
                 guessUserRepo.Add(model);
-                achievmentService.AssignBadgeIfPossible(playerId, BadgeType.MostSupervisory);
-                achievmentService.AssignBadgeIfPossible(guessPerson, BadgeType.MostWellKnown);
+                try
+                {
+                    achievmentService.AssignBadgeIfPossible(playerId, BadgeType.MostSupervisory);
+                    achievmentService.AssignBadgeIfPossible(guessPerson, BadgeType.MostWellKnown);
+                }
+                catch (Exception e)
+                {
+                    
+                }
             }
             
         }

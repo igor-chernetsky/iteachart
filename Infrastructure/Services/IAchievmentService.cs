@@ -16,6 +16,7 @@ namespace Infrastructure.Services
         private IRepository<AchievmentAssigned> achievmentAssignmentRepo;
         private readonly IRepository<Achievment> achievmentRepo;
         private IRepository<User> userRepo;
+        private IRepository<UserSkill> userSkillRepo;
 
         public AchievmentService(IRepository<AchievmentAssigned> achievmentAssignmentRepo, IRepository<User> userRepo, IRepository<Achievment> achievmentRepo)
         {
@@ -27,6 +28,7 @@ namespace Infrastructure.Services
 
         public void AddAllBadges()
         {
+            achievmentRepo.Remove(x => true);
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.MostWellKnown,
@@ -37,25 +39,25 @@ namespace Infrastructure.Services
             {
                 BadgeType = BadgeType.MostSupervisory,
                 Description = "The most supervisory employee",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                ImageUrl = "~/Content/badges/badge_eye.jpg"
             });
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.Completed5tests,
-                Description = "Completed 5 trainings",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                Description = "Completed 5 tests",
+                ImageUrl = "~/Content/badges/badge_1.png"
             });
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.Completed10tests,
-                Description = "Completed 10 trainings",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                Description = "Completed 10 tests",
+                ImageUrl = "~/Content/badges/badge_2.png"
             });
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.Completed15tests,
-                Description = "Completed 15 trainings",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                Description = "Completed 15 tests",
+                ImageUrl = "~/Content/badges/badge_3.png"
             });
 
         }
@@ -92,6 +94,41 @@ namespace Infrastructure.Services
                         });
                     }
                     break;
+                case BadgeType.Completed5tests:
+                case BadgeType.Completed10tests:
+                case BadgeType.Completed15tests:
+                    var skillesApproved = userSkillRepo.Query().Count(x => x.IsApproved);
+                    if (skillesApproved <= 5)
+                    {
+                        achievmentAssignmentRepo.Remove(x => x.UserId == userId && 
+                            (x.Achievment.BadgeType == BadgeType.Completed10tests ||x.Achievment.BadgeType == BadgeType.Completed15tests ));
+                        achievmentAssignmentRepo.Add(new AchievmentAssigned
+                        {
+                            UserId = userId,
+                            AchievmentId = achievmentRepo.Query().FirstOrDefault(x => x.BadgeType == BadgeType.Completed5tests).Id
+                        });
+                    }
+                    else if (skillesApproved <= 10)
+                    {
+                        achievmentAssignmentRepo.Remove(x => x.UserId == userId &&
+                            (x.Achievment.BadgeType == BadgeType.Completed15tests || x.Achievment.BadgeType == BadgeType.Completed5tests));
+                        achievmentAssignmentRepo.Add(new AchievmentAssigned
+                        {
+                            UserId = userId,
+                            AchievmentId = achievmentRepo.Query().FirstOrDefault(x => x.BadgeType == BadgeType.Completed10tests).Id
+                        });
+                    }else if (skillesApproved <= 15)
+                    {
+                        achievmentAssignmentRepo.Remove(x => x.UserId == userId &&
+                            (x.Achievment.BadgeType == BadgeType.Completed10tests || x.Achievment.BadgeType == BadgeType.Completed5tests));
+                        achievmentAssignmentRepo.Add(new AchievmentAssigned
+                        {
+                            UserId = userId,
+                            AchievmentId = achievmentRepo.Query().FirstOrDefault(x => x.BadgeType == BadgeType.Completed15tests).Id
+                        });
+                    }
+                    break;
+
             }
         }
     }
