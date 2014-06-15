@@ -84,3 +84,20 @@ input[type="checkbox"].input-validation-error {
 .label, .btn-danger{
     font-size: 14px;
 }
+
+#guessUserContainer .panel-default {
+    background-image: url('img/photos-left.png');
+    background-repeat: no-repeat;
+    position: relative;
+}
+#guessUserContainer .right-photo {
+    background-image: url('img/photos-right.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    position:absolute;
+    right: 0;
+    width: 300px;
+    top: 0;
+    bottom: 0;
+    z-index: 4;
+}

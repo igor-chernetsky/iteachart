@@ -222,6 +222,8 @@
     <Content Include="Content\Highlight\xcode.css" />
     <Content Include="Content\Highlight\zenburn.css" />
     <Content Include="Content\img\no-poster.png" />
+    <Content Include="Content\img\photos-left.png" />
+    <Content Include="Content\img\photos-right.png" />
     <Content Include="Content\Tooltipster\css\reset.css" />
     <Content Include="Content\Tooltipster\css\style.css" />
     <Content Include="Content\Tooltipster\css\themes\tooltipster-light.css" />

@@ -126,7 +126,7 @@
                 $('#myModalGame').modal('show')
                 $.getJSON('@Url.Action("Random", "Game")', function(data) {
                     var vmGuess = new GuessModel(data)
-                    var elemGuess = $('#guessUserContainer').get(0)
+                    var elemGuess = $('#homeGuessUserContainer').get(0)
                     ko.applyBindings(vmGuess, elemGuess)
                 })
 
@@ -148,64 +148,64 @@
             </div>
             <div class="modal-body">
                 @if (Request.IsAuthenticated)
-                {
-                    <div id="guessUserContainer" class="container">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <!-- ko with:GuessModel  -->
-                                <div class="panel panel-primary">
-                                    <div class="panel-body">
-                                        <h4 class="text-center">Do you know this person?</h4>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <p class="text-center">
-                                                    <a href="#">
-                                                        <img data-bind="attr:{src:ImageUrl}">
-                                                    </a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div data-bind="visible:$parent.itemIsSelected">
-                                            <div class="row">
-                                                <div class="col-md-12 text-center">
-                                                    <h4 data-bind="text:UserFullName"></h4>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 text-center">
-                                                    <div class="text-muted">Age: <span data-bind="text:Age"></span>, <span data-bind="text:Position"></span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+{
+    <div id="homeGuessUserContainer" class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <!-- ko with:GuessModel  -->
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <h4 class="text-center">Do you know this person?</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-center">
+                                    <a href="#">
+                                        <img data-bind="attr:{src:ImageUrl}">
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div data-bind="visible:$parent.itemIsSelected">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h4 data-bind="text:UserFullName"></h4>
                                 </div>
-                                <!-- /ko -->
-                                <div data-bind="visible:itemIsSelected">
-                                    <div class="row">
-                                        <div class="col-md-12" data-bind="slideVisible:isGuessed">
-                                            <div class="alert alert-success text-center">You win! </div>
-                                        </div>
-                                        <div class="col-md-12" data-bind="slideVisible:isNotGuessed">
-                                            <div class="alert alert-danger text-center">You loose! </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="text-muted">Age: <span data-bind="text:Age"></span>, <span data-bind="text:Position"></span></div>
                                 </div>
-
-                                <!-- ko foreach: Answers -->
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <input type="radio" name="choiceItem" data-bind="value:Id,attr:{id:Id},checked:$parent.selectedItem, disable:$parent.itemIsSelected()" />
-                                    </div>
-                                    <div class="col-md-10">
-                                        <label data-bind="attr:{for:Id}"><span data-bind="text:UserFullName"></span></label>
-                                    </div>
-                                </div>
-                                <!-- /ko -->
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- /ko -->
+                <div data-bind="visible:itemIsSelected">
+                    <div class="row">
+                        <div class="col-md-12" data-bind="slideVisible:isGuessed">
+                            <div class="alert alert-success text-center">You win! </div>
+                        </div>
+                        <div class="col-md-12" data-bind="slideVisible:isNotGuessed">
+                            <div class="alert alert-danger text-center">You loose! </div>
+                        </div>
+                    </div>
+                </div>
 
-                }
+                <!-- ko foreach: Answers -->
+                <div class="row">
+                    <div class="col-md-1">
+                        <input type="radio" name="choiceItem" data-bind="value:Id,attr:{id:Id},checked:$parent.selectedItem, disable:$parent.itemIsSelected()" />
+                    </div>
+                    <div class="col-md-10">
+                        <label data-bind="attr:{for:Id}"><span data-bind="text:UserFullName"></span></label>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+
+}
 
             </div>
             <div class="modal-footer">
