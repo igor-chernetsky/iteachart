@@ -71,7 +71,7 @@
                     self.selectedItem = ko.observable();
                     self.selectedItem.subscribe(function(value) {
                         if (value) {
-                            $.post('@Url.Action("WriteStatistic", "Game")', { guessPerson: self.GuessModel().Id, isGuessed: self.isGuessed() })
+                            $.post('@Url.Action("WriteStatistic", "Game")', { guessPerson: self.GuessModel().Id, isGuessed: self.GuessModel().Id == +self.selectedItem() })
                         }
                     })
                     self.itemIsSelected = ko.computed(function() {
