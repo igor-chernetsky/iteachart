@@ -9,7 +9,7 @@
 
 @section scripts
 {
-    
+
     <script type="text/javascript">
         $(function() {
             @{
@@ -24,26 +24,36 @@
                 var self = this
                 var depDefault = 'All Deps'
                 var depDefaultId = -1
-                this.searchExpr = ko.observable('')
-                this.currentDepId = ko.observable(depDefaultId)
-                this.currentDep = ko.observable(depDefault)
+                self.searchExpr = ko.observable('')
+                self.currentDepId = ko.observable(depDefaultId)
+                self.currentDep = ko.observable(depDefault)
 
-                this.departmentsRaw = ko.observableArray(@Html.Raw(depModel))
+                self.departmentsRaw = ko.observableArray(@Html.Raw(depModel))
 
-                this.orderedDeps = ko.computed(function() {
+                self.orderedDeps = ko.computed(function() {
                     var dbDeps = self.departmentsRaw().sort(function(left, right) { return left.Name == right.Name ? 0 : (left.Name < right.Name ? -1 : 1) })
 
                     dbDeps.unshift({ Id: depDefaultId, Name: depDefault })
                     return dbDeps
                 })
 
-                this.selectDep = function(item) {
+                self.selectDep = function(item) {
                     self.currentDep(item.Name)
                     self.currentDepId(item.Id)
                 }
 
                 var model = @Html.Raw(jsModel)
-                this.items = ko.observableArray(model)
+                self.items = ko.observableArray(model)
+                self.currentPage = ko.observable(1);
+                self.pageSize = 6;
+                self.pagesCount = ko.observable(Math.ceil(self.items().length / self.pageSize) || 1);
+                self.itemsToDisplay = ko.computed(function() {
+                    var pageSize = self.pageSize,
+                        pageIndex = self.currentPage(),
+                        startIndex = 0,
+                        endIndex = pageSize * pageIndex;
+                    return self.items().slice(startIndex, endIndex);
+                });
 
                 this.filteredItems = ko.computed(function() {
                     var filter = self.searchExpr().toLowerCase();
@@ -53,9 +63,16 @@
                                 (!(self.currentDepId() != depDefaultId) || item.DeptId == self.currentDepId());
                         });
                     } else {
-                        return self.items();
+                        return self.itemsToDisplay();
                     }
                 })
+                self.nextPage = function()
+                {
+                    var curPage = self.currentPage();
+                    if (curPage < self.pagesCount()) {
+                        self.currentPage(curPage + 1);
+                    }
+                }
 
             }
 
@@ -112,16 +129,16 @@
                     var elemGuess = $('#guessUserContainer').get(0)
                     ko.applyBindings(vmGuess, elemGuess)
                 })
-               
+
             }
         })
- 
+
     </script>
 
 
 }
 
-<div class="modal fade"  id="myModalGame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalGame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -132,64 +149,64 @@
             <div class="modal-body">
                 @if (Request.IsAuthenticated)
                 {
-                <div id="guessUserContainer" class="container">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                    <!-- ko with:GuessModel  -->
-                    <div class="panel panel-primary">
-                        <div class="panel-body">
-                            <h4 class="text-center">Do you know this person?</h4>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="text-center">
-                                        <a href="#">
-                                            <img data-bind="attr:{src:ImageUrl}">
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div data-bind="visible:$parent.itemIsSelected">
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <h4 data-bind="text:UserFullName"></h4>
+                    <div id="guessUserContainer" class="container">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <!-- ko with:GuessModel  -->
+                                <div class="panel panel-primary">
+                                    <div class="panel-body">
+                                        <h4 class="text-center">Do you know this person?</h4>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="text-center">
+                                                    <a href="#">
+                                                        <img data-bind="attr:{src:ImageUrl}">
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div data-bind="visible:$parent.itemIsSelected">
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <h4 data-bind="text:UserFullName"></h4>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <div class="text-muted">Age: <span data-bind="text:Age"></span>, <span data-bind="text:Position"></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <div class="text-muted">Age: <span data-bind="text:Age"></span>, <span data-bind="text:Position"></span></div>
+                                <!-- /ko -->
+                                <div data-bind="visible:itemIsSelected">
+                                    <div class="row">
+                                        <div class="col-md-12" data-bind="slideVisible:isGuessed">
+                                            <div class="alert alert-success text-center">You win! </div>
+                                        </div>
+                                        <div class="col-md-12" data-bind="slideVisible:isNotGuessed">
+                                            <div class="alert alert-danger text-center">You loose! </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /ko -->
-                    <div data-bind="visible:itemIsSelected">
-                        <div class="row">
-                            <div class="col-md-12" data-bind="slideVisible:isGuessed">
-                                <div class="alert alert-success text-center">You win! </div>
-                            </div>
-                            <div class="col-md-12" data-bind="slideVisible:isNotGuessed">
-                                <div class="alert alert-danger text-center">You loose! </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- ko foreach: Answers -->
-                    <div class="row">
-                        <div class="col-md-1">
-                            <input type="radio" name="choiceItem" data-bind="value:Id,attr:{id:Id},checked:$parent.selectedItem, disable:$parent.itemIsSelected()" />
-                        </div>
-                        <div class="col-md-10">
-                            <label data-bind="attr:{for:Id}"><span data-bind="text:UserFullName"></span></label>
+                                <!-- ko foreach: Answers -->
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <input type="radio" name="choiceItem" data-bind="value:Id,attr:{id:Id},checked:$parent.selectedItem, disable:$parent.itemIsSelected()" />
+                                    </div>
+                                    <div class="col-md-10">
+                                        <label data-bind="attr:{for:Id}"><span data-bind="text:UserFullName"></span></label>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
                         </div>
                     </div>
-                    <!-- /ko -->
-        </div>
-    </div>
-</div>
 
                 }
-            
+
             </div>
             <div class="modal-footer">
                 <div class="clearfix">
@@ -210,7 +227,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                 <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span data-bind="text: currentDep"></span><b class="caret"></b></a>
                         <ul class="dropdown-menu" data-bind="foreach: orderedDeps">
@@ -243,6 +260,11 @@
                     </p>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="button" value="Show more..." data-bind="click:nextPage" class="btn btn-primary" />
         </div>
     </div>
 </div>
