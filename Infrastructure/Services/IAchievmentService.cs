@@ -28,6 +28,7 @@ namespace Infrastructure.Services
 
         public void AddAllBadges()
         {
+            achievmentRepo.Remove(x => true);
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.MostWellKnown,
@@ -38,25 +39,25 @@ namespace Infrastructure.Services
             {
                 BadgeType = BadgeType.MostSupervisory,
                 Description = "The most supervisory employee",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                ImageUrl = "~/Content/badges/badge_eye.jpg"
             });
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.Completed5tests,
-                Description = "Completed 5 trainings",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                Description = "Completed 5 tests",
+                ImageUrl = "~/Content/badges/badge_1.png"
             });
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.Completed10tests,
-                Description = "Completed 10 trainings",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                Description = "Completed 10 tests",
+                ImageUrl = "~/Content/badges/badge_2.png"
             });
             achievmentRepo.Add(new Achievment
             {
                 BadgeType = BadgeType.Completed15tests,
-                Description = "Completed 15 trainings",
-                ImageUrl = "~/Content/badges/badge_gold.png"
+                Description = "Completed 15 tests",
+                ImageUrl = "~/Content/badges/badge_3.png"
             });
 
         }

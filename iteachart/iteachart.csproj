@@ -163,6 +163,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\badges\badge_1.png" />
+    <Content Include="Content\badges\badge_2.png" />
+    <Content Include="Content\badges\badge_3.png" />
+    <Content Include="Content\badges\badge_eye.jpg" />
     <Content Include="Content\badges\badge_gold.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
