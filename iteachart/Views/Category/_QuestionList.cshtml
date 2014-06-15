@@ -1,26 +1,35 @@
 ﻿@model IEnumerable<Infrastructure.EF.Domain.Question>
 
-<p>
-    @Html.ActionLink("Create New", "CreateQuestion", new { categoryId = ViewBag.categoryId }, new { @class = "btn btn-primary" })
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.QuestionString)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.QuestionString)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditQuestion", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" }) 
-            @Html.ActionLink("Delete", "DeleteQuestion", new { categoryId = item.CategoryId, id = item.Id }, new { @class = "btn btn-danger btn-sm" })
-        </td>
-    </tr>
+@if (Model.Any())
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionString)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionString)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditQuestion", new {id = item.Id}, new {@class = "btn btn-primary btn-sm"})
+                    @Html.ActionLink("Delete", "DeleteQuestion", new {categoryId = item.CategoryId, id = item.Id}, new {@class = "btn btn-danger btn-sm"})
+                </td>
+            </tr>
+        }
+
+    </table>
 }
-
-</table>
+else
+{
+    <div class="alert alert-info">No questions created yet</div>
+}
+<p>
+    @Html.ActionLink("Create New Question", "CreateQuestion", new { categoryId = ViewBag.categoryId }, new { @class = "btn btn-primary" })
+</p>

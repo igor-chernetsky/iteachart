@@ -22,6 +22,9 @@ namespace iteachart
             
             bundles.Add(new ScriptBundle("~/bundles/select2").Include(
                         "~/Scripts/select2.js"));
+            
+            bundles.Add(new ScriptBundle("~/bundles/tooltipster").Include(
+                        "~/Scripts/jquery.tooltipster.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
@@ -30,6 +33,7 @@ namespace iteachart
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/css/select2.css",
+                      "~/Content/Tooltipster/css/tooltipster.css",
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/test").Include(

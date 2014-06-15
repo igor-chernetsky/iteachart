@@ -17,5 +17,6 @@ namespace Infrastructure.EF.Domain
 
         public virtual ICollection<Attempt> Attempts { get; set; }
         public virtual Department Department { get; set; }
+        public virtual ICollection<AchievmentAssigned> AchievmentsAssigned { get; set; } 
     }
 }

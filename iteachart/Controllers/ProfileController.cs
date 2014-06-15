@@ -13,15 +13,18 @@ namespace iteachart.Controllers
     {
         private IUserService userService;
         private ICategoryService categoryService;
-        public ProfileController(IUserService userService, ICategoryService categoryService)
+        private IAchievmentService achivService;
+        public ProfileController(IUserService userService, ICategoryService categoryService, IAchievmentService achivService)
         {
             this.userService = userService;
             this.categoryService = categoryService;
+            this.achivService = achivService;
         }
 
         // GET: /Profile/1
         public ActionResult My()
         {
+            achivService.AddAllBadges();
             var userInfo = FIllUserInfo(CurrentUser.Id);
             return View("Index", userInfo);
         }

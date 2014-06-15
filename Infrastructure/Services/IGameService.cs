@@ -21,11 +21,13 @@ namespace Infrastructure.Services
         private IRepository<User> userRepo;
         private IRepository<GuessedUser> guessUserRepo;
         private IUserService userService;
-        public GameService(IRepository<User> userRepo, IUserService userService, IRepository<GuessedUser> guessUserRepo)
+        private IAchievmentService achievmentService;
+        public GameService(IRepository<User> userRepo, IUserService userService, IRepository<GuessedUser> guessUserRepo, IAchievmentService achievmentService)
         {
             this.userRepo = userRepo;
             this.userService = userService;
             this.guessUserRepo = guessUserRepo;
+            this.achievmentService = achievmentService;
         }
 
         public UserProfileModel GetRandomUser(int id)
@@ -68,6 +70,8 @@ namespace Infrastructure.Services
                     GuessedId = guessPerson
                 };
                 guessUserRepo.Add(model);
+                achievmentService.AssignBadgeIfPossible(playerId, BadgeType.MostSupervisory);
+                achievmentService.AssignBadgeIfPossible(guessPerson, BadgeType.MostWellKnown);
             }
             
         }

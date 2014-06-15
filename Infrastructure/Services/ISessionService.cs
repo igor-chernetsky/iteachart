@@ -101,8 +101,8 @@ namespace Infrastructure.Services
 
         public void LogOut()
         {
-            FormsAuthentication.SignOut();
             HttpContext.Current.Session.Abandon();
+            FormsAuthentication.SignOut();
         }
 
         public bool IsLoggedIn()

@@ -1,5 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
+using EntityFramework.Extensions;
 using Infrastructure.EF;
 
 namespace Infrastructure.Repositories
@@ -47,6 +50,18 @@ namespace Infrastructure.Repositories
             var attachedEntity = Set.Attach(entity);
             context.Entry(attachedEntity).State = EntityState.Deleted;
             context.SaveChanges();
+        }
+
+        public void Remove(Expression<Func<T, bool>> filterExpr = null)
+        {
+            if (filterExpr == null)
+            {
+                Set.Delete();
+            }
+            else
+            {
+                Set.Delete(filterExpr);
+            }
         }
     }
 }
