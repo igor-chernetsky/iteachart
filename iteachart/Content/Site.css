@@ -101,3 +101,11 @@ input[type="checkbox"].input-validation-error {
     bottom: 0;
     z-index: 4;
 }
+
+.bottom-images{
+    height: 120px;
+    background-image: url('img/bottom_image.png');
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    margin-bottom: -20px;
+}
