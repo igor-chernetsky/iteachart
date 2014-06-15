@@ -115,6 +115,7 @@
     <Compile Include="Models\GuessUserModel.cs" />
     <Compile Include="Models\IdNameModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\RatingItem.cs" />
     <Compile Include="Models\Smg\DepartmentRequest.cs" />
     <Compile Include="Models\Smg\DepartmentResponse.cs" />
     <Compile Include="Models\Smg\EmployeeDetails.cs" />

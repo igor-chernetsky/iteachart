@@ -271,6 +271,7 @@
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Shared\GuessWho.cshtml" />
     <Content Include="Views\Game\IndexPartial.cshtml" />
+    <Content Include="Views\Quiz\HallOfFame.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

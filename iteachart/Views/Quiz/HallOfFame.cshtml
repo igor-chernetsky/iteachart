@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "HallOfFame";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Hall Of Fame</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Department</th>
+            <th>Score</th>
+            <th>Achievements</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in (Dictionary<Infrastructure.EF.Domain.User, double>)ViewBag.top)
+        {
+            <tr class="@(ViewBag.currentId == a.Key.Id ? "success":"")">
+                <td><a href="/profile/index/@a.Key.Id"><img src="@a.Key.Image" /></a></td>
+                <td>@a.Key.FirstNameEng</td>
+                <td>@a.Key.LastNameEng</td>
+                <td>@a.Key.Department.Name</td>
+                <td>@Math.Round(a.Value, 2)</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>

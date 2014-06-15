@@ -56,5 +56,13 @@ namespace iteachart.Controllers
             }
             return Json(new { score = attempt.Score }, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize]
+        public ActionResult HallOfFame()
+        {
+            ViewBag.currentId = CurrentUser.Id;
+            ViewBag.top = attemptService.GetUsersTop();
+            return View();
+        }
 	}
 }

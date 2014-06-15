@@ -66,7 +66,8 @@ namespace Infrastructure.Services
 
         public List<UserProfileSkill> GetUserSkills(int userId)
         {
-            var userSkills = (from skill in userSkillRepo.Query()
+            var skillQuery = userSkillRepo.Query();
+            var userSkills = (from skill in skillQuery
                               where skill.UserId == userId
                               group skill by skill.Category.ParentCategory into skillsGrouped
                               select new UserProfileSkill
@@ -76,7 +77,18 @@ namespace Infrastructure.Services
                                   {
                                       SkillId = x.CategoryId,
                                       SkillName = x.Category.Name,
-                                      IsApproved = x.IsApproved
+                                      IsApproved = x.IsApproved,
+                                      Raiting = skillQuery
+                                        .Where(s => s.IsApproved && s.CategoryId == x.CategoryId)
+                                        .Select(t => new RatingItem
+                                        {
+                                            UserId = t.UserId,
+                                            Score = t.User.Attempts.Where(a => a.CategoryId == x.CategoryId).OrderBy(o => o.Score).FirstOrDefault().Score,
+                                            FirstName = t.User.FirstNameEng,
+                                            LastName = t.User.LastNameEng,
+                                            ItsMe = t.UserId == userId
+                                        })
+                                        .OrderByDescending(o => o.Score)
                                   })
                               })
                              .ToList();
