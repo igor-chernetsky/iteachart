@@ -62,7 +62,7 @@
                 var model = @Html.Raw(jsModel)
                 self.items = ko.observableArray(model)
                 self.currentPage = ko.observable(1);
-                self.pageSize = 5;
+                self.pageSize = 8;
                 self.pagesCount = ko.observable(Math.ceil(self.items().length / self.pageSize) || 1);
                 self.itemsToDisplay = ko.computed(function() {
                     var pageSize = self.pageSize,
