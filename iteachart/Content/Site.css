@@ -80,3 +80,7 @@ input[type="checkbox"].input-validation-error {
 .questionContainer .well{
     min-height: 150px;
 }
+
+.label, .btn-danger{
+    font-size: 14px;
+}
