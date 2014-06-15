@@ -43,7 +43,8 @@ namespace iteachart.Controllers
                 Position = s.Position,
                 Room = s.Room,
                 DeptId = s.DeptId,
-                DeptName = s.Department.Name
+                DeptName = s.Department.Name,
+                Technologies = s.AddedSkills.Where(t => t.IsApproved).Select(ss => ss.Category.Name).ToList()
             }).ToList();
             return View(users);
         }
