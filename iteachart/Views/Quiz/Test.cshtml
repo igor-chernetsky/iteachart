@@ -18,7 +18,7 @@
 }
 
 <div id="testContainer" class="container">
-    <div data-bind="foreach: questions">
+    <div data-bind="foreach: questions" class="questionContainer">
         <div data-bind="attr: {data: id}, css:{hidden: ($index() != $parent.questionIndex())}" class="panel">
             <div data-bind="text: text, css:{error: $parent.status() == 'wrong', correct: $parent.status() == 'correct'}" class="well well-sm"></div>
             <div>

@@ -18,15 +18,20 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var a in (Dictionary<Infrastructure.EF.Domain.User, double>)ViewBag.top)
+        @foreach (var a in (Dictionary<Infrastructure.Models.UserProfileModel, double>)ViewBag.top)
         {
             <tr class="@(ViewBag.currentId == a.Key.Id ? "success":"")">
-                <td><a href="/profile/index/@a.Key.Id"><img src="@a.Key.Image" /></a></td>
-                <td>@a.Key.FirstNameEng</td>
-                <td>@a.Key.LastNameEng</td>
-                <td>@a.Key.Department.Name</td>
+                <td><a href="/profile/index/@a.Key.Id"><img src="@a.Key.ImageUrl" height="100" width="100" /></a></td>
+                <td>@a.Key.UserName</td>
+                <td>@a.Key.UserLastName</td>
+                <td>@a.Key.Department</td>
                 <td>@Math.Round(a.Value, 2)</td>
-                <td></td>
+                <td>
+                    @foreach (var achivement in a.Key.Achievments)
+                    {
+                        <img src="@Url.Content(achivement.ImageUrl)" alt="@a.Key.UserName @a.Key.UserLastName">
+                    }
+                </td>
             </tr>
         }
     </tbody>

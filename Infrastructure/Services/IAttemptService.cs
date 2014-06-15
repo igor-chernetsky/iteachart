@@ -1,4 +1,5 @@
 ﻿using Infrastructure.EF.Domain;
+using Infrastructure.Models;
 using Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Infrastructure.Services
         Attempt GetAttemptById(int id);
         void IncreaseScore(int id);
         int CreateAttempt(Attempt attempt);
-        Dictionary<User, double> GetUsersTop();
+        Dictionary<UserProfileModel, double> GetUsersTop();
     }
 
     public class AttemptService:IAttemptService
@@ -44,15 +45,31 @@ namespace Infrastructure.Services
         }
 
 
-        public Dictionary<User, double> GetUsersTop()
+        public Dictionary<UserProfileModel, double> GetUsersTop()
         {
-            Dictionary<User, double> dictResult = new Dictionary<User, double>();
+            Dictionary<UserProfileModel, double> dictResult = new Dictionary<UserProfileModel, double>();
             var tt = attemptRepo.Query().GroupBy(a => a.User, a => a.Score, 
                 (user, score) => new { user = user, score = score.Average() }).OrderByDescending(a=>a.score);
 
-            foreach (var t in tt)
+            foreach (var t in tt.ToList())
             {
-                dictResult.Add(t.user, t.score);
+                UserProfileModel userModel = new UserProfileModel
+                {
+                    Id = t.user.Id,
+                    UserName = t.user.FirstNameEng,
+                    UserLastName = t.user.LastNameEng,
+                    Department = t.user.Department.Name,
+                    Age = (DateTime.Now - t.user.Birthday).Days / 365,
+                    ImageUrl = t.user.Image,
+                    Achievments = t.user.AchievmentsAssigned.Select(x => new AchievmentModel
+                    {
+                        BadgeType = x.Achievment.BadgeType,
+                        Description = x.Achievment.Description,
+                        ImageUrl = x.Achievment.ImageUrl
+                    }),
+                    Position = t.user.Position
+                };
+                dictResult.Add(userModel, t.score);
             }
             return dictResult;
         }
