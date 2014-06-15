@@ -2,8 +2,7 @@
     <ul class="nav navbar-nav">
         @if (Request.IsAuthenticated && !String.IsNullOrEmpty(User.Identity.Name))
         {
-            <li>
-                @Html.ActionLink(string.IsNullOrEmpty(User.Identity.Name) ? "Unknown": User.Identity.Name, "My", "Profile", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })
+            <li><p class="navbar-text navbar-right">Signed in as @Html.ActionLink(string.IsNullOrEmpty(User.Identity.Name) ? "Unknown" : User.Identity.Name, "My", "Profile", routeValues: null, htmlAttributes: new { @class = "username navbar-link", title = "Manage"})</p>
             </li>
             <li>
                 <a href="javascript:document.getElementById('logoutForm').submit()" class="btn">Log off</a>

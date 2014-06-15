@@ -45,7 +45,7 @@
                 var model = @Html.Raw(jsModel)
                 self.items = ko.observableArray(model)
                 self.currentPage = ko.observable(1);
-                self.pageSize = 6;
+                self.pageSize = 10;
                 self.pagesCount = ko.observable(Math.ceil(self.items().length / self.pageSize) || 1);
                 self.itemsToDisplay = ko.computed(function() {
                     var pageSize = self.pageSize,
@@ -246,8 +246,8 @@
     </nav>
 
     <div data-bind="foreach: filteredItems" class="row">
-        <div class="col-sm-6 col-md-4" style="margin-bottom: 30px;">
-            <div class="thumbnail" style=" min-height: 280px;">
+        <div class="col-sm-6 col-md-3" style="margin-bottom: 30px;">
+            <div class="thumbnail" style=" min-height: 280px; padding-top:15px;">
                 <img class="profile-poster" data-bind="attr: {src: Image}" alt=" ...">
                 <div class="caption">
                     <a data-bind="attr: { href: ProfileLink }"><h3 data-bind="text: FullName"></h3></a>
