@@ -167,12 +167,7 @@
                 {
                     <h3>You already know these users</h3>
                     <hr />
-                    <div>
-                        @foreach (var achievment in Model.Achievments)
-                        {
-                            <img src="@Url.Content(@achievment.ImageUrl)" class="tooltipster" title="@achievment.Description" />
-                        }
-                    </div>
+                    
                     foreach (var user in Model.KnownUsers)
                     {
                         <div class="thumbnail pull-left" style="width: 350px; margin-left: 20px; margin-bottom: 20px;">
