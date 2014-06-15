@@ -1,4 +1,5 @@
-﻿using Infrastructure.Code;
+﻿using System.Web.Mvc;
+using Infrastructure.Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Infrastructure.EF.Domain
     public class Question
     {
         public int Id { get; set; }
+        [AllowHtml]
         public string QuestionString { get; set; }
 
         public QuestionTypes Type { get; set; }

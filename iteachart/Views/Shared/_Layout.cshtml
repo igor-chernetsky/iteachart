@@ -10,6 +10,7 @@
     <script>
         $(function() {
             $(".tooltipster").tooltipster();
+            hljs.initHighlightingOnLoad()
         })
     </script>
 </head>
@@ -55,6 +56,7 @@
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/highlight")
     @RenderSection("scripts", required: false)
     </body>
 </html>
