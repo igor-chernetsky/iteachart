@@ -107,5 +107,6 @@ input[type="checkbox"].input-validation-error {
     background-image: url('img/bottom_image.png');
     background-repeat: no-repeat;
     background-position: bottom center;
+    background-size: 100%;
     margin-bottom: -20px;
 }
