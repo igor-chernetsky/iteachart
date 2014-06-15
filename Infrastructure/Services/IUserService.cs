@@ -83,7 +83,7 @@ namespace Infrastructure.Services
                                         .Select(t => new RatingItem
                                         {
                                             UserId = t.UserId,
-                                            Score = t.User.Attempts.Where(a => a.CategoryId == x.CategoryId).OrderBy(o => o.Score).FirstOrDefault().Score,
+                                            Score = t.User.Attempts.Where(a => a.CategoryId == x.CategoryId).OrderByDescending(o => o.Score).FirstOrDefault().Score,
                                             FirstName = t.User.FirstNameEng,
                                             LastName = t.User.LastNameEng,
                                             ItsMe = t.UserId == userId
