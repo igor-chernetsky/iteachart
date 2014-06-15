@@ -25,5 +25,6 @@ namespace Infrastructure.Models
         public int Id { get; set; }
         public bool CanEdit { get; set; }
         public IEnumerable<UserProfileModel> KnownUsers { get; set; }
+        public IEnumerable<AchievmentModel> Achievments { get; set; }
     }
 }

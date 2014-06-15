@@ -51,6 +51,12 @@ namespace Infrastructure.Services
                 Department = user.Department.Name,
                 Age = (DateTime.Now - user.Birthday).Days / 365,
                 ImageUrl = user.Image,
+                Achievments = user.AchievmentsAssigned.Select(x=> new AchievmentModel
+                {
+                    BadgeType = x.Achievment.BadgeType,
+                    Description = x.Achievment.Description,
+                    ImageUrl = x.Achievment.ImageUrl
+                }),
                 Position = user.Position
             };
             return model;

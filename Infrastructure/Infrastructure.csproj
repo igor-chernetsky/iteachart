@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.Extended">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.95\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
@@ -77,12 +80,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\BadgeType.cs" />
     <Compile Include="Code\QuestionTypes.cs" />
+    <Compile Include="EF\Domain\Achievment.cs" />
+    <Compile Include="EF\Domain\AchievmentAssigned.cs" />
     <Compile Include="EF\Domain\Attempt.cs" />
     <Compile Include="EF\Domain\Question.cs" />
     <Compile Include="EF\Domain\GuessedUsers.cs" />
     <Compile Include="EF\Domain\UserSkill.cs" />
     <Compile Include="EF\Domain\Variant.cs" />
+    <Compile Include="EF\Mappings\AchievmentAssignedMap.cs" />
+    <Compile Include="EF\Mappings\AchievmentMap.cs" />
     <Compile Include="EF\Mappings\AttemptsMap.cs" />
     <Compile Include="EF\Mappings\CategoryMap.cs" />
     <Compile Include="Code\Constants.cs" />
@@ -100,6 +108,7 @@
     <Compile Include="EF\Domain\User.cs" />
     <Compile Include="EF\Mappings\UserMap.cs" />
     <Compile Include="EF\MyDbContext.cs" />
+    <Compile Include="Models\AchievmentModel.cs" />
     <Compile Include="Models\AddSkillModel.cs" />
     <Compile Include="Models\AuthenticationResponse.cs" />
     <Compile Include="EF\Domain\Department.cs" />
@@ -121,6 +130,7 @@
     <Compile Include="Repositories\CrudRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Secure\SessionUser.cs" />
+    <Compile Include="Services\IAchievmentService.cs" />
     <Compile Include="Services\IAttemptService.cs" />
     <Compile Include="Services\ICategoryService.cs" />
     <Compile Include="Services\IQuestionService.cs" />

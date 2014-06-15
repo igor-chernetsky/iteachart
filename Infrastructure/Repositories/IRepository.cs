@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure.Repositories
@@ -9,6 +11,7 @@ namespace Infrastructure.Repositories
         void Add(T item);
         void Update(T item);
         void Remove(T item);
+        void Remove(Expression<Func<T, bool>> filterExpr = null);
         IQueryable<T> Query();
     }
 }

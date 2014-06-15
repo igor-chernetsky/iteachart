@@ -37,6 +37,12 @@
                             <h3>@Model.UserName @Model.UserLastName</h3>
                             <div class="text-muted">Age: @Model.Age, @Model.Position</div>
                             <hr />
+                            <div>
+                                @foreach (var achievment in Model.Achievments)
+                                {
+                                    <img src="@Url.Content(@achievment.ImageUrl)" class="tooltipster" title="@achievment.Description"/>
+                                }
+                            </div>
                             @Html.ValidationSummary()
                         </div>
                     </div>
