@@ -13,10 +13,13 @@ namespace iteachart.Controllers
     {
         private readonly IUserService userService;
         private ISessionService sessionService;
-        public HomeController(IUserService userService, ISessionService sessionService)
+        private ICategoryService categoryService;
+
+        public HomeController(IUserService userService, ISessionService sessionService, ICategoryService categoryService)
         {
             this.userService = userService;
             this.sessionService = sessionService;
+            this.categoryService = categoryService;
         }
 
         public ActionResult Index()
@@ -27,7 +30,11 @@ namespace iteachart.Controllers
             }
             ViewBag.FirstLogin = TempData["FirstLogin"] != null;
             ViewBag.Deps = userService.GetDepartments();
-
+            ViewBag.Technologies = categoryService.GetCategories().Where(x => x.ParentId != null).Select(x=>new IdNameModel
+            {
+                Id = x.Id,
+                Name = x.Name
+            });
             var users = userService.GetUsersList()
                 .ToList()
                 .Select(s => new UserModel

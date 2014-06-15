@@ -8,6 +8,6 @@ namespace iteachart.Models
     public class IdNameModel
     {
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
     }
 }
