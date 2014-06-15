@@ -15,7 +15,7 @@
             @{
                 var jsModel = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
                 var depModel = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Deps);
-
+                var technologies = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Technologies);
             }
             var isAuthenticated = '@Request.IsAuthenticated' == 'True'
             var isFirstLogin = '@ViewBag.FirstLogin' == 'True'
@@ -24,11 +24,23 @@
                 var self = this
                 var depDefault = 'All Deps'
                 var depDefaultId = -1
+                var techDefault = 'All techs'
+                var techDefaultId = -1
+
                 self.searchExpr = ko.observable('')
                 self.currentDepId = ko.observable(depDefaultId)
                 self.currentDep = ko.observable(depDefault)
-
+                self.currentTechId = ko.observable(techDefaultId)
+                self.currentTech = ko.observable(techDefault)
                 self.departmentsRaw = ko.observableArray(@Html.Raw(depModel))
+                self.technologiesRaw = ko.observableArray(@Html.Raw(technologies))
+
+                self.orderedTechs = ko.computed(function () {
+                    var dbDeps = self.technologiesRaw().sort(function (left, right) { return left.Name == right.Name ? 0 : (left.Name < right.Name ? -1 : 1) })
+
+                    dbDeps.unshift({ Id: techDefaultId, Name: techDefault })
+                    return dbDeps
+                })
 
                 self.orderedDeps = ko.computed(function() {
                     var dbDeps = self.departmentsRaw().sort(function(left, right) { return left.Name == right.Name ? 0 : (left.Name < right.Name ? -1 : 1) })
@@ -42,10 +54,15 @@
                     self.currentDepId(item.Id)
                 }
 
+                self.selectTech = function(item) {
+                    self.currentTech(item.Name)
+                    self.currentTechId(item.Id)
+                }
+
                 var model = @Html.Raw(jsModel)
                 self.items = ko.observableArray(model)
                 self.currentPage = ko.observable(1);
-                self.pageSize = 10;
+                self.pageSize = 5;
                 self.pagesCount = ko.observable(Math.ceil(self.items().length / self.pageSize) || 1);
                 self.itemsToDisplay = ko.computed(function() {
                     var pageSize = self.pageSize,
@@ -57,10 +74,12 @@
 
                 this.filteredItems = ko.computed(function() {
                     var filter = self.searchExpr().toLowerCase();
-                    if (filter || self.currentDepId() != depDefaultId) {
-                        return ko.utils.arrayFilter(self.items(), function(item) {
+                    if (filter || self.currentDepId() != depDefaultId || self.currentTechId() != techDefaultId) {
+                        return ko.utils.arrayFilter(self.items(), function (item) {
+                           
                             return (!filter || item.FullName.toLowerCase().indexOf(filter.trim()) > -1) &&
-                                (!(self.currentDepId() != depDefaultId) || item.DeptId == self.currentDepId());
+                                (!(self.currentDepId() != depDefaultId) || item.DeptId == self.currentDepId()) &&
+                                (!(self.currentTechId() != techDefaultId) || $.inArray(self.currentTech(), item.Technologies)!=-1);
                         });
                     } else {
                         return self.itemsToDisplay();
@@ -234,6 +253,12 @@
                             <li data-bind="click: $parent.selectDep"><a href="#"><span data-bind="text: Name"></span></a></li>
                         </ul>
                     </li>
+                     <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span data-bind="text: currentTech"></span><b class="caret"></b></a>
+                         <ul class="dropdown-menu" data-bind="foreach: orderedTechs">
+                             <li data-bind="click: $parent.selectTech"><a href="#"><span data-bind="text: Name"></span></a></li>
+                         </ul>
+                    </li>
                 </ul>
                 <div class="navbar-form navbar-left" role="search">
                     <div class="form-group">
@@ -247,7 +272,7 @@
 
     <div data-bind="foreach: filteredItems" class="row">
         <div class="col-sm-6 col-md-3" style="margin-bottom: 30px;">
-            <div class="thumbnail" style=" min-height: 280px; padding-top:15px;">
+            <div class="thumbnail" style=" min-height: 300px; padding-top:15px;">
                 <img class="profile-poster" data-bind="attr: {src: Image}" alt=" ...">
                 <div class="caption">
                     <a data-bind="attr: { href: ProfileLink }"><h3 data-bind="text: FullName"></h3></a>
