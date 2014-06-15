@@ -230,7 +230,7 @@
 
     <div data-bind="foreach: filteredItems" class="row">
         <div class="col-sm-6 col-md-4" style="margin-bottom: 30px;">
-            <div class="thumbnail">
+            <div class="thumbnail" style=" min-height: 280px;">
                 <img class="profile-poster" data-bind="attr: {src: Image}" alt=" ...">
                 <div class="caption">
                     <a data-bind="attr: { href: ProfileLink }"><h3 data-bind="text: FullName"></h3></a>
@@ -238,8 +238,8 @@
                     <p>Position: <span data-bind="text: Position"></span></p>
                     <p data-bind="visible: Technologies.length > 0">
                         Skills: <span data-bind="foreach: Technologies">
-                                    <span class="label label-success" data-bind="text: $parent.Technologies[$index()]"></span>
-                                </span>
+                            <span class="label label-success" style="margin-right:5px; display:inline-block" data-bind="text: $parent.Technologies[$index()]"></span>
+                        </span>
                     </p>
                 </div>
             </div>
