@@ -42,7 +42,11 @@
             <h4>Check your wrong answers:</h4>
             <div data-bind="foreach: wrongAnswers">
                 <div class="panel">
-                    <div class="well well-sm" data-bind="text: text"></div>
+                    <div class="well well-sm">
+                        <pre>
+                            <code data-bind="text: text"></code>
+                        </pre>
+                    </div>
                     <div class="well well-sm correct" data-bind="text: answer"></div>
                 </div>
             </div>
