@@ -54,7 +54,7 @@
                         if (!self.questions().length) {
                             setResults();
                         }
-                    }, 2000);
+                    }, 700);
                 }
             });
         }
