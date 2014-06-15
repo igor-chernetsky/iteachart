@@ -15,6 +15,9 @@ namespace iteachart
                 "~/Scripts/knockout-{version}.js",
                 "~/Scripts/common.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/highlight").Include(
+                "~/Scripts/highlight.pack.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -34,7 +37,8 @@ namespace iteachart
                       "~/Content/bootstrap.css",
                       "~/Content/css/select2.css",
                       "~/Content/Tooltipster/css/tooltipster.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/Highlight/default.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/test").Include(
                       "~/Scripts/viewmodels/testViewModel.js"));

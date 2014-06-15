@@ -24,7 +24,6 @@ namespace iteachart.Controllers
         // GET: /Profile/1
         public ActionResult My()
         {
-            achivService.AddAllBadges();
             var userInfo = FIllUserInfo(CurrentUser.Id);
             return View("Index", userInfo);
         }
